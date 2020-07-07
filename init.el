@@ -164,6 +164,8 @@
     spacemacs-theme
     doom-themes
     dracula-theme
+
+    heaven-and-hell
     ))
 
 (dolist (p my-packages)
