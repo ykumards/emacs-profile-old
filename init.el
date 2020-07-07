@@ -148,6 +148,9 @@
 
     page-break-lines
     pdf-tools
+    neotree
+    treemacs
+    recentf
 
     use-package
     web-mode

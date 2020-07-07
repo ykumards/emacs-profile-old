@@ -157,16 +157,8 @@
                 (lambda () (interactive) (find-file "~/Documents/Work/org/inbox.org")))
 
 ;; https://github.com/alhassy/org-special-block-extras#installation-instructions
-(use-package org-special-block-extras
-  :ensure t
-  :hook (org-mode . org-special-block-extras-mode))
-
-(defun org-special-block-extras--foo (backend contents)
-  "The FOO block type replaces all occurances of ‘foo’ with ‘bar’,
-unless a ‘:replacement:’ is provided."
-  (-let [(contents′ . (&alist 'replacement))
-           (org-special-block-extras--extract-arguments contents 'replacement)]
-    (s-replace "foo" (or replacement "bar") contents′)))
-
+(require 'org-special-block-extras)
+;; (use-package org-special-block-extras
+;;  :ensure t
+;;  :hook (org-mode . org-special-block-extras-mode))
 ;; (add-hook #'org-mode-hook #'org-special-block-extras-mode)
-

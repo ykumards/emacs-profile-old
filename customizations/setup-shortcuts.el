@@ -2,8 +2,8 @@
 (global-set-key (kbd "C-q") 'org-agenda)
 
 ;; Neotree toggle
-(global-set-key (kbd "C-c n") 'neotree-toggle)
-;; (global-set-key (kbd "C-C n") 'treemacs)
+;; (global-set-key (kbd "C-c n") 'neotree-toggle)
+(global-set-key (kbd "C-C n") 'treemacs)
 
 ;;windmove
 (global-set-key (kbd "C-c <left>")  'windmove-left)

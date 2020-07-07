@@ -16,6 +16,8 @@
           treemacs-file-follow-delay             0.2
           treemacs-file-name-transformer         #'identity
           treemacs-follow-after-init             t
+          treemacs-add-and-display-current-project t
+          treemacs-display-current-project-exclusively t
           treemacs-git-command-pipe              ""
           treemacs-goto-tag-strategy             'refetch-index
           treemacs-indentation                   2
@@ -89,3 +91,5 @@
   :after treemacs persp-mode ;;or perspective vs. persp-mode
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
+
+(add-hook 'projectile-after-switch-project-hook 'treemacs-display-current-project-exclusively)

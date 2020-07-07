@@ -13,7 +13,7 @@
 
 (setq org-static-blog-page-header
   (concat
-   ;; org-html-head-extra  ;; Alterd by ‘org-special-block-extras’
+   org-html-head-extra  ;; Alterd by ‘org-special-block-extras’
    (concat
    "<meta name=\"author\" content=\"yogesh kumar\">
     <meta name=\"referrer\" content=\"no-referrer\">"
