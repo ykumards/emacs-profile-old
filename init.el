@@ -146,6 +146,8 @@
     helm-projectile
     helm-descbinds
 
+    page-break-lines
+
     use-package
     web-mode
 
@@ -154,8 +156,14 @@
 
     ;; https://github.com/justbur/emacs-which-key
     which-key
-
     nyan-mode
+
+    ;; Themes
+    color-theme-sanityinc-tomorrow
+    color-theme-sanityinc-solarized
+    spacemacs-theme
+    doom-themes
+    dracula-theme
     ))
 
 (dolist (p my-packages)

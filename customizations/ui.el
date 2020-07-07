@@ -51,22 +51,6 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
 ;; Color Themes
-;; Read http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/
-;; for a great explanation of emacs color themes.
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
-;; for a more technical explanation.
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(add-to-list 'load-path "~/.emacs.d/themes")
-;; (load-theme 'doom-one t)
-;;(load-theme 'tomorrow-night-bright t)
-;;(require 'color-theme-sanityinc-tomorrow)
-;;(color-theme-sanityinc-tomorrow-bright)
-;;(load-theme 'oceanic t)
-;;(load-theme 'base16-solarized-light t)
-;;(load-theme 'spacemacs-light t)
-;; (load-theme 'base16-dracula t)
-;; (load-theme 'atom-one-dark t)
-
 (setq heaven-and-hell-theme-type 'dark)
 
 ;; Set preferred light and dark themes
@@ -78,14 +62,6 @@
 
 ;; Add init-hook so heaven-and-hell can load your theme
 (add-hook 'after-init-hook 'heaven-and-hell-init-hook)
-
-;; powerline customizes the mode line
-;; (add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
-;; (require 'powerline)
-;;(custom-set-faces
-;; '(mode-line ((t (:foreground "#333" :background "#bad063" :box nil))))
-;; ;'(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil))))
-;; )
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height
@@ -132,15 +108,6 @@
 ;; open files in existing frame
 (setq ns-pop-up-frames nil)
 
-
-;; (require 'cycle-themes)
-;; (cycle-themes-mode t)
-;; (load-theme 'base16-solarflare t)
-;; (setq cycle-themes-theme-list
-;;       '(base16-solarflare base16-solarized-light))
-
-
-(require 'page-break-lines)
 
 ;; Show line numbers everywhere
 (global-linum-mode)
