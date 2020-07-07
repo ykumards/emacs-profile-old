@@ -147,6 +147,7 @@
     helm-descbinds
 
     page-break-lines
+    pdf-tools
 
     use-package
     web-mode
