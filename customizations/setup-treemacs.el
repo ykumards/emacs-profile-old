@@ -92,4 +92,5 @@
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
 
+;; https://github.com/Alexander-Miller/treemacs/issues/660
 (add-hook 'projectile-after-switch-project-hook 'treemacs-display-current-project-exclusively)
