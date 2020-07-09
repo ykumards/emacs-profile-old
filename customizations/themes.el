@@ -4,4 +4,8 @@
 ;; Uncomment this to increase font size
 ;; (set-face-attribute 'default nil :height 140)
 ;; (load-theme 'tomorrow-night-bright t)
-(load-theme 'spacemacs-dark)
+;; (load-theme 'spacemacs-dark)
+
+;; Color Themes
+(load-theme 'doom-one)
+

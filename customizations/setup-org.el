@@ -23,8 +23,6 @@
 ;;       (find-file (car fs)))
 ;;     (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
 
-;; Enable org-super-agenda
-;; (setq org-super-agenda-mode t)
 
 ;; Prettify to display latex symbols inline
 (add-hook 'org-mode-hook 'org-toggle-pretty-entities)
@@ -40,6 +38,7 @@
 (setq org-startup-with-inline-images t)
 
 ;; bullets
+(require 'org-bullets)
 (add-hook 'org-mode-hook 'org-bullets-mode)
 (setq org-bullets-bullet-list '("•"))
 
@@ -137,7 +136,7 @@
 (setq org-journal-dir "~/Documents/Work/org/musings")
 (setq org-journal-enable-encryption nil)
 (setq org-journal-file-format "%Y%m%d.org")
-(setq org-journal-date-prefix "#+TITLE: Work Notes ")
+(setq org-journal-date-prefix "#+TITLE: Musings ")
 (global-set-key "\C-cj" 'org-journal-new-entry)
 
 ;; Deft shortcuts

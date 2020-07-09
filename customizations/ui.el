@@ -16,7 +16,6 @@
   (tool-bar-mode -1))
 
 
-
 ;; Don't show native OS scroll bars for buffers because they're redundant
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
@@ -50,18 +49,6 @@
 (setq mouse-wheel-follow-mouse 't)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
-;; Color Themes
-(setq heaven-and-hell-theme-type 'dark)
-
-;; Set preferred light and dark themes
-;; default light is emacs default theme, default dark is wombat
-;; Themes can be the list: (dark . (tsdh-dark tango-dark))
-(setq heaven-and-hell-themes
-      '((light . sanityinc-solarized-light)
-        (dark . spacemacs-dark)))
-
-;; Add init-hook so heaven-and-hell can load your theme
-(add-hook 'after-init-hook 'heaven-and-hell-init-hook)
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height
@@ -120,3 +107,15 @@
 
 ;; lose the menubar
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+;; COLOR THEMES
+(setq heaven-and-hell-theme-type 'dark)
+;; Set preferred light and dark themes
+;; default light is emacs default theme, default dark is wombat
+;; Themes can be the list: (dark . (tsdh-dark tango-dark))
+(setq heaven-and-hell-themes
+      '((light . sanityinc-solarized-light)
+        (dark . doom-one)))
+
+;; Add init-hook so heaven-and-hell can load your theme
+(add-hook 'after-init-hook 'heaven-and-hell-init-hook)
