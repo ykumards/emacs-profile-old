@@ -68,6 +68,8 @@
     centaur-tabs
     clj-refactor
 
+    dash-functional
+
     ;; makes handling lisp expressions much, much easier
     ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
     paredit
