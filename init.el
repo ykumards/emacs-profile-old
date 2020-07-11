@@ -138,6 +138,9 @@
     org-journal
     org-static-blog
     org-bullets
+    org-super-agenda
+    org-download
+    org-roam
 
     htmlize
 
@@ -148,6 +151,7 @@
     helm-git-grep
     helm-projectile
     helm-descbinds
+    helm-org-rifle
 
     page-break-lines
     pdf-tools
@@ -319,7 +323,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (org-static-blog treemacs-persp treemacs-magit treemacs-icons-dired treemacs-projectile treemacs-evil treemacs org-super-agenda org-brain emacs-xkcd org-ac helm-org-rifle centaur-tabs pdf-tools org-pdftools multiple-cursors auctex pandoc-mode pandoc org-download worf heaven-and-hell magit-todos magit-find-file ivy-bibtex helm-bibtex zotxt ein-mumamo doom-themes atom-one-dark-theme slime fill-column-indicator dakrone-light-theme solarized-theme color-theme-solarized color-theme-sanityinc-solarized spacemacs-theme autopair counsel-dash ob-ipython company-lua lua-mode websocket ein deft geiser speed-type racket-mode py-autopep8 flycheck org-journal nyan-mode dashboard which-key elpy neotree org-bullets base16-theme clojure-mode scss-mode yaml-mode web-mode use-package thesaurus tagedit smex rainbow-delimiters php-mode noflet markdown-mode magit ido-ubiquitous helm-projectile helm-ls-git helm-git-grep helm-descbinds helm-ag haskell-mode haml-mode git-gutter exec-path-from-shell enh-ruby-mode dockerfile-mode csharp-mode crux company color-theme-sanityinc-tomorrow clj-refactor aggressive-indent ag adoc-mode adjust-parens ack-and-a-half)))
+    (org-roam org-static-blog treemacs-persp treemacs-magit treemacs-icons-dired treemacs-projectile treemacs-evil treemacs org-super-agenda org-brain emacs-xkcd org-ac helm-org-rifle centaur-tabs pdf-tools org-pdftools multiple-cursors auctex pandoc-mode pandoc org-download worf heaven-and-hell magit-todos magit-find-file ivy-bibtex helm-bibtex zotxt ein-mumamo doom-themes atom-one-dark-theme slime fill-column-indicator dakrone-light-theme solarized-theme color-theme-solarized color-theme-sanityinc-solarized spacemacs-theme autopair counsel-dash ob-ipython company-lua lua-mode websocket ein deft geiser speed-type racket-mode py-autopep8 flycheck org-journal nyan-mode dashboard which-key elpy neotree org-bullets base16-theme clojure-mode scss-mode yaml-mode web-mode use-package thesaurus tagedit smex rainbow-delimiters php-mode noflet markdown-mode magit ido-ubiquitous helm-projectile helm-ls-git helm-git-grep helm-descbinds helm-ag haskell-mode haml-mode git-gutter exec-path-from-shell enh-ruby-mode dockerfile-mode csharp-mode crux company color-theme-sanityinc-tomorrow clj-refactor aggressive-indent ag adoc-mode adjust-parens ack-and-a-half)))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
  '(safe-local-variable-values

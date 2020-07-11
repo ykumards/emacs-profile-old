@@ -1,59 +1,65 @@
 ;; The following lines are always needed.  Choose your own keys.
-;;(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-;;(add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))   ;; Journal entries
-;; (add-hook 'org-mode-hook 'turn-on-font-lock) ; not needed when global-font-lock-mode is on
-
-;; Original cycle agenda files is broken
-;; (defun org-cycle-agenda-files ()
-;;   "Cycle through the files in `org-agenda-files'.
-;; If the current buffer visits an agenda file, find the next one in the list.
-;; If the current buffer does not, find the first agenda file."
-;;   (interactive)
-;;   (let* ((fs (org-agenda-files t))
-;;    (files (append fs (list (car fs))))
-;;    (tcf (if buffer-file-name (file-truename buffer-file-name)))
-;;    file)
-;;     (unless files (user-error "No agenda files"))
-;;     (catch 'exit
-;;       (while (setq file (pop files))
-;;   (if (equal (file-truename file) tcf)
-;;       (when (car files)
-;;         (find-file (car files))
-;;         (throw 'exit t))))
-;;       (find-file (car fs)))
-;;     (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
-
 
 ;; Prettify to display latex symbols inline
 (add-hook 'org-mode-hook 'org-toggle-pretty-entities)
 ;; (setq org-pretty-entities t
 ;;       org-pretty-entities-include-sub-superscripts t)
 ;; (setq org-toggle-pretty-entities 1)
-(setq org-agenda-files (directory-files-recursively "~/Documents/Work/org/" "\\.org$"))
-;; (setq org-agenda-files (list "~/Documents/Work/org/"))
-;;                              "~/Documents/Work/"))
+
+;; (require 'org-super-agenda)
+;; (let ((org-super-agenda-groups
+;;        '((:log t)  ; Automatically named "Log"
+;;          (:name "Schedule"
+;;                 :time-grid t)
+;;          (:name "Today"
+;;                 :scheduled today)
+;;          (:habit t)
+;;          (:name "Due today"
+;;                 :deadline today)
+;;          (:name "Overdue"
+;;                 :deadline past)
+;;          (:name "Due soon"
+;;                 :deadline future)
+;;          (:name "Unimportant"
+;;                 :todo ("SOMEDAY" "MAYBE" "CHECK" "TO-READ" "TO-WATCH")
+;;                 :order 100)
+;;          (:name "Waiting..."
+;;                 :todo "WAITING"
+;;                 :order 98)
+;;          (:name "Scheduled earlier"
+;;                 :scheduled past))))
+;;   (org-agenda-list))
+
+;;(setq org-agenda-files (directory-files-recursively "~/Documents/Work/org/" "\\.org$"))
+(setq org-agenda-files (list "~/Documents/Work/org/2020.org"
+                             "~/Documents/Work/org/todo.org"
+                             "~/Documents/Work/org/inbox.org"
+                             "~/Documents/Work/org/projects.org"))
 (setq org-default-notes-file "~/Documents/Work/org/inbox.org")
 
 (setq org-indent-mode t)
 (setq org-startup-with-inline-images t)
+(setq org-agenda-time-grid
+        '((daily today require-timed)
+          ()
+           "......"
+          "----------------------"
+))
+
+(use-package org-download
+  :after org
+  :bind
+  (:map org-mode-map
+        (("s-Y" . org-download-screenshot)
+         ("s-y" . org-download-yank))))
 
 ;; bullets
 (require 'org-bullets)
 (add-hook 'org-mode-hook 'org-bullets-mode)
 (setq org-bullets-bullet-list '("•"))
 
-;; (define-key org-mode-map (kbd "$") (lambda ()
-;;                                      (interactive)
-;;                                      (insert "$")
-;;                                      (save-excursion
-;;                                        (left-char 1)
-;;                                        (if (org-inside-LaTeX-fragment-p)
-;;                                            (progn
-;;                                              (right-char 2)
-;;                                              (org-preview-latex-fragment))))))
-
 (setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)"))))
+      (quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "MEETING(m)" "|" "DONE(d)"))))
 
 (setq org-todo-keyword-faces
       (quote (("NEXT" :foreground "blue" :weight bold)
@@ -115,10 +121,6 @@
               ("n" "note" entry (file "~/Documents/Work/org/inbox.org")
                "* %? :NOTE:\n%U\n%a\n"))))
 
-
-(setq org-startup-indented t)
-(setq org-deadline-warning-days 3)
-
 ;; Configure refile to use ido and allow nested targets
 (setq org-completion-use-ido t)
 (setq org-outline-path-complete-in-steps nil)
@@ -132,12 +134,14 @@
 ;;        (:foreground "cyan" :weight 'bold)))
 
 ;; Org Journal
-(require 'org-journal)
-(setq org-journal-dir "~/Documents/Work/org/musings")
-(setq org-journal-enable-encryption nil)
-(setq org-journal-file-format "%Y%m%d.org")
-(setq org-journal-date-prefix "#+TITLE: Musings ")
-(global-set-key "\C-cj" 'org-journal-new-entry)
+(use-package org-journal
+  :bind
+  ("C-c j" . org-journal-new-entry)
+  :custom
+  (org-journal-date-prefix "#+title: ")
+  (org-journal-file-format "%Y-%m-%d.org")
+  (org-journal-dir "~/Documents/Work/org/notes/musings")
+  (org-journal-date-format "%A, %d %B %Y"))
 
 ;; Deft shortcuts
 (setq deft-extensions '("org" "md" "txt" "rtf"))
@@ -146,6 +150,7 @@
 (global-set-key "\C-cd" 'deft)
 (setq deft-use-filename-as-title t)
 (setq deft-use-filter-string-for-filename t)
+(setq deft-org-mode-title-prefix t)
 (setq deft-auto-save-interval nil)
 (setq deft-file-naming-rules
       '((noslash . "-")
@@ -155,8 +160,23 @@
 (global-set-key (kbd "C-c r")
                 (lambda () (interactive) (find-file "~/Documents/Work/org/inbox.org")))
 
+(use-package org-roam
+      :ensure t
+      :hook
+      (after-init . org-roam-mode)
+      :custom
+      (org-roam-directory "~/Documents/Work/org/notes")
+      :bind (:map org-roam-mode-map
+              (("C-c h l" . org-roam)
+               ("C-c h f" . org-roam-find-file)
+               ("C-c h g" . org-roam-graph-show))
+              :map org-mode-map
+              (("C-c h i" . org-roam-insert))
+              (("C-c h I" . org-roam-insert-immediate))))
+(setq org-roam-completion-system 'helm)
+
 ;; https://github.com/alhassy/org-special-block-extras#installation-instructions
-(require 'org-special-block-extras)
+;; (require 'org-special-block-extras)
 ;; (use-package org-special-block-extras
 ;;  :ensure t
 ;;  :hook (org-mode . org-special-block-extras-mode))
