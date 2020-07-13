@@ -124,6 +124,7 @@
 ;; Configure refile to use ido and allow nested targets
 (setq org-completion-use-ido t)
 (setq org-outline-path-complete-in-steps nil)
+(setq org-indent-indentation-per-level 2)
 (setq org-refile-use-outline-path t)
 (setq org-refile-targets '((nil . (:maxlevel . 5))))
 (setq org-capture-bookmark nil)
