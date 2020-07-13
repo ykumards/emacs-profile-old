@@ -1,0 +1,3 @@
+The normal way to do this is using the stuff given [[https://orgmode.org/manual/Repeated-tasks.html][here]]. 
+
+But sometimes we just have to copy the task multiple times with a date-shift and this is accomplished by `C-c C-x c` 

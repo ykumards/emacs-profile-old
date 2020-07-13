@@ -1,0 +1,63 @@
+* Yearly Goals
+** Research output
+*** 1 publication (AAAI/ICLR)
+** Kaggle Master
+*** 1 Gold
+*** 1 prize winner
+** Theory
+*** LFD Book
+*** DL Book
+*** Pearl Causality Primer
+*** Mackay Book (Bayesian ML Course material)
+** Programming
+** Read 20 books
+* Planner
+** July
+*** Monthly Goals
+**** [#A] AAAI/ICLR Experiments 
+**** [#A] Kaggle SIIM - Gold Hunt
+**** [#A] Pearl Primer Book
+**** [#A] LFD Book (1-5)
+**** [#B] 99 Bottles of OOP
+**** [#B] Pragmatic Programmer
+**** [#C] Noisy CFI experiments in Jax
+**** [#C] TarNet theory
+*** July: Notes
+**** Sun Jul  5 18:40:30 2020
+Tackling this month will be very important because I have the peace of mind without any distractions. However, when I do have a lot of time at hand, I tend to spend it on doing things that are not really important and eventually, I end up wasting all the time. That's why I am back to the tried and tested world of org mode and now I think I can focus completely on just having one interface to handle all my organization stuff.
+I have to come up with my own ideas for turning into a proper paper by the end of this month. This means I should be done with all the initial level experiments of this work. However, I have to also do some of the things that I had promised to the idiot so he doesn't feel like I just abandoned it right away. The important point here is that I should convey with evidence that my idea is doable by the AAAI deadline and that I should be focussed on that for now, and slowly push his shit out by the end of the year. Quite simple, this is the plan for the month. While I do realize that completely going against him will be a satisfactory thing to do, I will have to face a lot of backlash and bad blood as a result of it. The simple rule is that I should not be doing anything that will affect my peace of mind and having a full blown ego war with your advisor is not going to be peaceful. 
+More on this later but for this week, I should focus on implementing my own idea and coming up with a more concrete plan.
+**** Mon Jul  6 15:35:40 2020
+I had a start with the seqCFI today. Spent part of the evening working with sequential generation models again, it is a much better state of mind to be in compared to the crap that all this probabilistic thinking is. I hope I get some results on this by the end of this month. 
+I have to first get an intuitive understanding of transformers before I can move onto work with more complicated models. So today, I will just go through the annotated transformers paper in colab.
+*** Week 28 (Jul 5 - 11)
+**** Weekly Goals
+***** TODO [#A] Build RNN prototype for seqCFI                :noisy:cfi:
+SCHEDULED: <2020-07-07 Tue> DEADLINE: <2020-07-09 Thu>
+***** TODO [#A] Setup baseline codebase for kaggle-SIIM
+DEADLINE: <2020-07-11 Sat>
+***** TODO Routine: Pearl Causality
+DEADLINE: <2020-07-07 Tue 10:15-12:15>
+***** TODO Routine: Pearl Causality
+DEADLINE: <2020-07-09 Thu 10:15-12:15>
+***** TODO Routine: LFD Book
+DEADLINE: <2020-07-06 Mon 10:15-12:15>
+***** TODO Routine: LFD Book
+DEADLINE: <2020-07-08 Wed 10:15-12:15>
+***** TODO Routine: LFD Book
+DEADLINE: <2020-07-10 Fri 10:15-12:15>
+***** TODO [#C] Implement matlab port in JAX
+DEADLINE: <2020-07-10 Fri>
+**** Week 28: Notes
+This week I should focus on the routine more than anything else. I seemed to have stepped off the gas just a bit, and quite understandbly because the last few weeks before this have been a bit hard, but this does not mean that I should lose this great opportunity to just focus and get some work done without any interruptions from the bayesian nutjob.
+*** Week 29 (Jul 12 - 18)
+**** Week 29: Notes
+This is sort of a pull togther week.
+** August
+** September
+** October
+** November
+** December
+
+
+

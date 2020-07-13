@@ -1,0 +1,45 @@
+#+TITLE: About
+#+subtitle: Yogesh Kumar
+#+OPTIONS: html-postamble:nil toc:t author:nil date:nil num:nil
+#+export_file_name: ./about.html
+
+#+latex_header: \usepackage[hmargin=10mm,vmargin=10mm]{geometry}
+
+
+#+latex_header: \usepackage{graphicx,wrapfig}
+#+latex_header: \usepackage[svgnames]{xcolor} \usepackage{hyperref}
+#+latex_header: \hypersetup{linktoc = all, colorlinks = true, urlcolor = LimeGreen, linkcolor = black}
+#+latex_header: \usepackage{nopageno}
+#+HTML_HEAD: <link href="css/blog-banner.css" rel="stylesheet" type="text/css" />
+
+#+HTML_HEAD: <link href="css/org-notes-style.css" rel="stylesheet" type="text/css" />
+#+HTML_HEAD: <link href="css/floating-toc.css" rel="stylesheet" type="text/css" />
+# The value of: org-static-blog-page-preamble
+#+html_head: <div class="header">
+#+html_head:   <a href="https://ykumards.github.io/" class="logo">Hola!</a>
+#+html_head:   <br>
+#+html_head:     <a href="https://ykumards.github.io/archive">Archive</a>
+#+html_head:     <a href="https://ykumards.github.io/tags">Tags</a>
+#+html_head:     <a href="https://ykumards.github.io/rss.xml">RSS</a>
+#+html_head:     <a href="https://ykumards.github.io/about">About</a>
+#+html_head: </div>
+
+Hi there!
+
+I’m Yogesh Kumar, a CS grad student at NYU’s Courant Institute.
+
+I live in New York City. Am terrified of the possibility of falling asleep on a subway.
+
+# +attr_html: :style float:right; padding: 0 20px;
+#+attr_latex: :width 115px
+#+attr_html: :width 300 :style border:2px solid black;
+[[./img/zen_profile.jpg]]
+
+I spend most of my time tinkering with Machine Learning algorithms, specially interested in the ones that try to learn someone’s taste in music.
+
+I also code in Functional Languages (Clojure is my latest obsession) and try to chug along SICP.
+
+I spend my evenings running along the Hudson dreaming of owning a pretty white yatch someday. I also read books of all kind, I write reviews occasionally for the ones I really love.
+
+
+

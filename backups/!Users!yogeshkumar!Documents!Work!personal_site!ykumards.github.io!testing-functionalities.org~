@@ -1,0 +1,2275 @@
+# -*- eval: (org-babel-load-file "AlBasmala.org") -*-
+#+title: AlBasmala: @@html:<br>@@ Blogging with Emacs & Org-mode (•̀ᴗ•́)و
+# +DATE: 2018-06-01
+#+date: <2020-05-03 19:29>
+#+filetags: emacs
+#+fileimage: org_logo.png 150 150 no-border
+#+options: d:results
+#+OPTIONS: toc:nil html-postamble:nil d:nil
+#+PROPERTY: header-args :tangle "~/blog/AlBasmala.el" :results silent :exports code  :noeval
+#+description: How my blog is setup (•̀ᴗ•́)و
+
+# TODO: Automate the insertation of HTML Premable/postable for statics like about/AlBasmala
+
+# (maybe-clone "https://github.com/alhassy/alhassy.github.io.git" "~/blog")
+
+# (org-static-blog-assemble-index)
+
+# MA: I want to avoid the <br> from appearing in the browser frame's title
+# +begin_export html
+# <script> window.parent.document.title = "AlBasmala: Blogging with Emacs & Org-mode (•̀ᴗ•́)و"; </script>
+# +end_export
+
+* HTML Preamble :ignore:
+  :PROPERTIES:
+  :CUSTOM_ID: HTML-Preamble
+  :END:
+#+BEGIN_SRC emacs-lisp :exports results :results raw replace drawer
+(s-join "\n" (--map (concat "#+HTML_HEAD: " it)
+  (s-split "\n" (concat
+               org-static-blog-page-preamble
+               org-static-blog-page-header))))
+#+END_SRC
+
+#+RESULTS:
+:results:
+#+HTML_HEAD: <div class="header">
+#+HTML_HEAD:   <a href="https://alhassy.github.io/" class="logo">Life & Computing Science</a>
+#+HTML_HEAD:   <br>
+#+HTML_HEAD:     <a href="https://alhassy.github.io/AlBasmala">AlBasmala</a>
+#+HTML_HEAD:     <a href="https://alhassy.github.io/archive">Archive</a>
+#+HTML_HEAD:     <a href="https://alhassy.github.io/tags">Tags</a>
+#+HTML_HEAD:     <a href="https://alhassy.github.io/rss.xml">RSS</a>
+#+HTML_HEAD:     <a href="https://alhassy.github.io/about">About</a>
+#+HTML_HEAD: </div>
+#+HTML_HEAD:         <style>
+#+HTML_HEAD:         /* From: https://endlessparentheses.com/public/css/endless.css */
+#+HTML_HEAD:         /* See also: https://meta.superuser.com/questions/4788/css-for-the-new-kbd-style */
+#+HTML_HEAD:         kbd
+#+HTML_HEAD:         {
+#+HTML_HEAD:           -moz-border-radius: 6px;
+#+HTML_HEAD:           -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+#+HTML_HEAD:           -webkit-border-radius: 6px;
+#+HTML_HEAD:           -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+#+HTML_HEAD:           background-color: #f7f7f7;
+#+HTML_HEAD:           border: 1px solid #ccc;
+#+HTML_HEAD:           border-radius: 6px;
+#+HTML_HEAD:           box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+#+HTML_HEAD:           color: #333;
+#+HTML_HEAD:           display: inline-block;
+#+HTML_HEAD:           font-family: 'Droid Sans Mono', monospace;
+#+HTML_HEAD:           font-size: 80%;
+#+HTML_HEAD:           font-weight: normal;
+#+HTML_HEAD:           line-height: inherit;
+#+HTML_HEAD:           margin: 0 .1em;
+#+HTML_HEAD:           padding: .08em .4em;
+#+HTML_HEAD:           text-shadow: 0 1px 0 #fff;
+#+HTML_HEAD:           word-spacing: -4px;
+#+HTML_HEAD:
+#+HTML_HEAD:           box-shadow: 2px 2px 2px #222; /* MA: An extra I've added. */
+#+HTML_HEAD:         }
+#+HTML_HEAD:         </style>
+#+HTML_HEAD:         <link rel="stylesheet" type="text/css" href="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/css/tooltipster.bundle.min.css"/>
+#+HTML_HEAD:
+#+HTML_HEAD:         <link rel="stylesheet" type="text/css" href="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-punk.min.css" />
+#+HTML_HEAD:
+#+HTML_HEAD:         <script type="text/javascript">
+#+HTML_HEAD:             if (typeof jQuery == 'undefined') {
+#+HTML_HEAD:                 document.write(unescape('%3Cscript src="https://code.jquery.com/jquery-1.10.0.min.js"%3E%3C/script%3E'));
+#+HTML_HEAD:             }
+#+HTML_HEAD:         </script>
+#+HTML_HEAD:
+#+HTML_HEAD:          <script type="text/javascript"            src="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+#+HTML_HEAD:
+#+HTML_HEAD:           <script>
+#+HTML_HEAD:                  $(document).ready(function() {
+#+HTML_HEAD:                      $('.tooltip').tooltipster({
+#+HTML_HEAD:                          theme: 'tooltipster-punk',
+#+HTML_HEAD:                          contentAsHTML: true,
+#+HTML_HEAD:                          animation: 'grow',
+#+HTML_HEAD:                          delay: [100,500],
+#+HTML_HEAD:                          // trigger: 'click'
+#+HTML_HEAD:                          trigger: 'custom',
+#+HTML_HEAD:                          triggerOpen: {
+#+HTML_HEAD:                              mouseenter: true
+#+HTML_HEAD:                          },
+#+HTML_HEAD:                          triggerClose: {
+#+HTML_HEAD:                              originClick: true,
+#+HTML_HEAD:                              scroll: true
+#+HTML_HEAD:                          }
+#+HTML_HEAD:          });
+#+HTML_HEAD:                  });
+#+HTML_HEAD:              </script>
+#+HTML_HEAD:
+#+HTML_HEAD:         <style>
+#+HTML_HEAD:            abbr {color: red;}
+#+HTML_HEAD:
+#+HTML_HEAD:            .tooltip { border-bottom: 1px dotted #000;
+#+HTML_HEAD:                       color:red;
+#+HTML_HEAD:                       text-decoration: none;}
+#+HTML_HEAD:         </style>
+#+HTML_HEAD:         <meta name="author" content="Musa Al-hassy">
+#+HTML_HEAD:     <meta name="referrer" content="no-referrer"><link href="usual-org-front-matter.css" rel="stylesheet" type="text/css" /><link href="org-notes-style.css" rel="stylesheet" type="text/css" /><link href="floating-toc.css" rel="stylesheet" type="text/css" /><link href="blog-banner.css" rel="stylesheet" type="text/css" /><link rel="icon" href="images/favicon.png"><script type="text/javascript">
+#+HTML_HEAD:    /*
+#+HTML_HEAD:    @licstart  The following is the entire license notice for the
+#+HTML_HEAD:    JavaScript code in this tag.
+#+HTML_HEAD:
+#+HTML_HEAD:    Copyright (C) 2012-2020 Free Software Foundation, Inc.
+#+HTML_HEAD:
+#+HTML_HEAD:    The JavaScript code in this tag is free software: you can
+#+HTML_HEAD:    redistribute it and/or modify it under the terms of the GNU
+#+HTML_HEAD:    General Public License (GNU GPL) as published by the Free Software
+#+HTML_HEAD:    Foundation, either version 3 of the License, or (at your option)
+#+HTML_HEAD:    any later version.  The code is distributed WITHOUT ANY WARRANTY;
+#+HTML_HEAD:    without even the implied warranty of MERCHANTABILITY or FITNESS
+#+HTML_HEAD:    FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+#+HTML_HEAD:
+#+HTML_HEAD:    As additional permission under GNU GPL version 3 section 7, you
+#+HTML_HEAD:    may distribute non-source (e.g., minimized or compacted) forms of
+#+HTML_HEAD:    that code without the copy of the GNU GPL normally required by
+#+HTML_HEAD:    section 4, provided you include this license notice and a URL
+#+HTML_HEAD:    through which recipients can access the Corresponding Source.
+#+HTML_HEAD:
+#+HTML_HEAD:
+#+HTML_HEAD:    @licend  The above is the entire license notice
+#+HTML_HEAD:    for the JavaScript code in this tag.
+#+HTML_HEAD:    */
+#+HTML_HEAD:    <!--/*--><![CDATA[/*><!--*/
+#+HTML_HEAD:     function CodeHighlightOn(elem, id)
+#+HTML_HEAD:     {
+#+HTML_HEAD:       var target = document.getElementById(id);
+#+HTML_HEAD:       if(null != target) {
+#+HTML_HEAD:         elem.cacheClassElem = elem.className;
+#+HTML_HEAD:         elem.cacheClassTarget = target.className;
+#+HTML_HEAD:         target.className = "code-highlighted";
+#+HTML_HEAD:         elem.className   = "code-highlighted";
+#+HTML_HEAD:       }
+#+HTML_HEAD:     }
+#+HTML_HEAD:     function CodeHighlightOff(elem, id)
+#+HTML_HEAD:     {
+#+HTML_HEAD:       var target = document.getElementById(id);
+#+HTML_HEAD:       if(elem.cacheClassElem)
+#+HTML_HEAD:         elem.className = elem.cacheClassElem;
+#+HTML_HEAD:       if(elem.cacheClassTarget)
+#+HTML_HEAD:         target.className = elem.cacheClassTarget;
+#+HTML_HEAD:     }
+#+HTML_HEAD:    /*]]>*///-->
+#+HTML_HEAD:    </script><script type="text/x-mathjax-config">
+#+HTML_HEAD:        MathJax.Hub.Config({
+#+HTML_HEAD:            displayAlign: "center",
+#+HTML_HEAD:            displayIndent: "0em",
+#+HTML_HEAD:
+#+HTML_HEAD:            "HTML-CSS": { scale: 100,
+#+HTML_HEAD:                            linebreaks: { automatic: "false" },
+#+HTML_HEAD:                            webFont: "TeX"
+#+HTML_HEAD:                           },
+#+HTML_HEAD:            SVG: {scale: 100,
+#+HTML_HEAD:                  linebreaks: { automatic: "false" },
+#+HTML_HEAD:                  font: "TeX"},
+#+HTML_HEAD:            NativeMML: {scale: 100},
+#+HTML_HEAD:            TeX: { equationNumbers: {autoNumber: "AMS"},
+#+HTML_HEAD:                   MultLineWidth: "85%",
+#+HTML_HEAD:                   TagSide: "right",
+#+HTML_HEAD:                   TagIndent: ".8em"
+#+HTML_HEAD:                 }
+#+HTML_HEAD:    });
+#+HTML_HEAD:    </script>
+#+HTML_HEAD:    <script type="text/javascript"
+#+HTML_HEAD:            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+#+HTML_HEAD:
+:end:
+
+* Abstract                                         :ignore:
+  :PROPERTIES:
+  :CUSTOM_ID: Abstract
+  :END:
+
+#+TOC: headlines 2
+
+How my blog is setup (•̀ᴗ•́)و
+
+# This article is a literate [[https://orgmode.org/][Org]] file that when loaded executes
+# all source blocks and produces an Elisp file containing them.
+
+* Features :ignore:
+  :PROPERTIES:
+  :CUSTOM_ID: Features
+  :header-args:  :tangle no
+  :END:
+Here are some notable features of my blog.
+
++ ✓ Org-mode, a rich markup, to write articles ♥‿♥
++ ✓ Tags and RSS feed for blog articles --- §[[initial-setup]]
++ ✓ A nice blog banner --- §[[blog-banner]]
++ /✓ Dynamically/ highlighting code from references in prose --- §[[blog-banner]]
++ ✓ Tooltips, folded regions, and badges --- [[badge:org-special-block-extras|1.2|informational|https://alhassy.github.io/org-special-block-extras/|Gnu-Emacs][org-special-block-extras badge]]
++ ✓ Overall nice looking HTML style --- [[http://taopeng.me/org-notes-style/][org-notes-style]]
++ ✓ Beautiful math using LaTeX notation, $\forall \phi ⇒ \exists \phi$ ---
+  §[[MathJax-Support]]
++ ✓ A floating, yet unobtrusive, table of contents --- §[[floating-toc]]
++ ✓ Headings are clickable links with the resulting anchors being
+  Github-like --- §[[ensuring-useful-html-anchors]] and §[[clickable-headlines]]
++ ✓ Comments for blog readers --- §[[Comments]]
++ ✓ Articles have dedicated images, §[[Images]], which are displayed
+  on the blog's welcome page along with the article's abstract, §[[Index]]
+  - Auto-generated index/sitemap that shows an image and short abstract of each article
++ ✓ Augment article footers to link to the Org source and to the Github history
+  --- §[[footers]]
+  - Org source is colourised!
++ ✓ /Dynamically/ adjust amount of time left until user finishes reading the
+    article --- §[[footers]]
++ ✓ Style inline code and tables --- §[[curvy-blocks]]
++ ✓ Unfurling links --- §[[unfurling]]
+
+#
+# + search
+
+# + Org-mode unicorn as faveicon!
+
+# This, like the upcoming articles, is intended to be a living document.
+# The date serves to be date of the first release and the repo contains
+# the history of any alterations.
+
+#+begin_details
+:title: Super Simple Intro to Org-mode
+
+Org-mode is an outliner, a rich markup language, spreadsheet tool, literate
+programming systems, and so much more.
+
+Org-mode syntax is very /natural/; e.g., the following is Org-mode!
+
+- You can try Org-mode notation and see how it renders live
+  at: http://mooz.github.io/org-js/
+#+begin_src org :noeval
++ Numbered and bulleted lists are as expected.
+  - Do the things:
+    1.  This first
+    2.  This second
+    44. [@44] This forty-fourth
+  - =[@𝓃]= at the beginning of an iterm forces
+    list numbering to start at 𝓃
+  - =[ ]= or =[X]= at the beginning for checkbox lists
+  - Use =Alt ↑, ↓= to move items up and down lists;
+    renumbering happens automatically.
+
++ Definitions lists:
+   ~- term :: def~
++ Use a comment, such as =# separator=, between two lists
+  to communicate that these are two lists that /happen/ to be
+  one after the other. Or use any /non-indented/ text to split
+  a list into two.
+
+,* My top heading, section
+  words
+,** Child heading, subsection
+  more words
+,*** Grandchild heading, subsubsection
+    even more!
+#+END_SRC
+
+You make a heading by writing =* heading= at the start of a line, then you can
+kbd:TAB to fold/unfold its contents. A table of contents, figures, tables can be
+requested as follows:
+#+BEGIN_SRC org
+# figures not implemented in the HTML backend
+# The 𝓃 is optional and denotes headline depth
+,#+toc: headlines 𝓃
+,#+toc: figures
+,#+toc: tables
+#+END_SRC
+
++ *Markup* elements can be nested.
+
+  | Syntax                             | Result           |
+  |------------------------------------+------------------|
+  | ~/Emphasise/~, italics               | /Emphasise/        |
+  | ~*Strong*~, bold                     | *Strong*           |
+  | ~*/very strongly/*~, bold italics    | */very strongly/*  |
+  | ~=verbatim=~, monospaced typewriter  | =verbatim=         |
+  | ~+deleted+~                          | +deleted+          |
+  | ~_inserted_~                         | _inserted_         |
+  | ~super^{script}ed~                   | super^{script}ed |
+  | ~sub_{scripted}ed~                   | sub_{scripted}ed |
+
+  * Markup can span across multiple lines, by default no more than 2.
+  * In general, markup cannot be ‘in the middle’ of a word.
++ New lines demarcate paragraphs
++ Use =\\= to force line breaks without starting a new paragraph
++ Use /at least/ 5 dashes, =-----=, to form a horizontal rule
+
+*Export* In Emacs, press kbd:C-c_C-e_h_o to obtain an HTML format of the Org-mode
+markup; use kbd:C-c_C-e_l_o to obtain a PDF rendition.
+
+*Working with tables*
+#+BEGIN_SRC org
+#+ATTR_HTML: :width 100%
+#+name: my-tbl
+#+caption: Example table
+| Who? | What? |
+|------+-------|
+| me   | Emacs |
+| you  | Org   |
+#+END_SRC
+
+Note the horizontal rule makes a header row and is formed by typing [[kbd:doit][| -]] then
+pressing kbd:TAB. You can kbd:TAB between cells.
+
+*Working with links*
+
+Link syntax is =[[source url][description]]=; e.g., we can refer to the above
+table with =[[my-tbl][woah]]=.
+Likewise for images: =file:path-to-image.=
+
+# The HTML has Up/Home on the right now ;-)
+# +HTML_LINK_HOME: http://www.google.com
+# +HTML_LINK_UP: http://www.bing.com
+
+*Source code*
+#+begin_src org -n
+,#+begin_src C
+int tot = 1;                    (ref:start)
+for (int i = 0; i != 10; i++)   (ref:loop)
+   tot *= i;                    (ref:next)
+printf("The factorial of 10 is %d", tot);
+,#+end_src
+#+end_src
+
+The labels =(ref:name)= refer to the lines in the source code and can be
+referenced with link syntax: ~[[(name)]]~. Hovering over the link, in the HTML
+export, will dynamically highlight the corresponding line of code.  To strip-out
+the labels from the displayed block, use ~-r -n~ in the header so it becomes
+=#+begin_src C -r -n=, now the references become line numbers.
+
+Another reason to use Org:
+If you use =:results raw=, you obtain *dynamic templates* that may use Org-markup:
+#+BEGIN_SRC C :results raw replace
+printf("*bold* +%d+ (strikethrough) /slanted/", 12345);
+#+END_SRC
+
+#+RESULTS:
+*bold* +12345+ (strikethrough) /slanted/
+*bold* +12345+ (strikethrough) /slanted/
+
+Also: Notice that a C program can be run without a =main= ;-)
+
+*Mathematics*
+
+#+BEGIN_SRC org
+$\sin^2 x + \cos^2 x = \int_\pi^{\pi + 1} 1 dx = {3 \over 3}$
+#+END_SRC
+\[ ⇒ \quad \sin^2 x + \cos^2 x = \int_\pi^{\pi + 1} 1 dx = {3 \over 3} \]
+
+- Instead of =$=, use ~\[...\]~ to display a formula on its own line, centred.
+- Captioned equations are numbered and can be referenced via links
+
+#+BEGIN_SRC org
+#+name: euler
+\begin{equation}
+e ^ {i \pi} + 1 = 0
+\end{equation}
+
+See equation =[[euler]]=.
+#+END_SRC
+⇒
+#+name: euler
+\begin{equation}
+e ^ {i \pi} + 1 = 0
+\end{equation}
+
+See equation [[euler]].
+
+#+end_details
+
+* Using [[https://github.com/bastibe/org-static-blog][org-static-block]]
+  :PROPERTIES:
+  :CUSTOM_ID: https-github-com-bastibe-org-static-blog-org-static-block
+  :END:
+
+<<initial-setup>>
+
+Let's use [[https://github.com/bastibe/org-static-blog][org-static-block]] to make our blog. Why?
+- It's a Lisp program smaller than 900 lines, its source is easy to read and
+  understand, and, most importantly, it was super easy to get started using it
+  using the [[https://github.com/bastibe/org-static-blog#examples][given example]].
+
+Let's declare the necessary basic facts of our blog.
+  #+begin_src emacs-lisp -n :exports code
+(setq org-static-blog-publish-title "Life & Computing Science")
+(setq org-static-blog-publish-url "https://alhassy.github.io/")
+(setq org-static-blog-publish-directory "~/blog/")
+(setq org-static-blog-posts-directory "~/blog/posts/")
+(setq org-static-blog-drafts-directory "~/blog/drafts/")
+
+;; Use “#+filetags: τ₁ τ₂ … τₙ”
+(setq org-static-blog-enable-tags t)
+
+;; I'd like to have tocs and numbered headings
+(setq org-export-with-toc t)
+(setq org-export-with-section-numbers t)
+#+end_src
+
+* HTML Header
+  :PROPERTIES:
+  :CUSTOM_ID: HTML-Header
+  :END:
+
+<<the-html-header>>
+
+What do we want to be inserted into the head of every page?
+
+Firstly, we want some styling rules to be loaded.
+#+begin_src emacs-lisp -r -n :noweb-ref my-html-header :tangle no
+(concat
+"<meta name=\"author\" content=\"Musa Al-hassy\">
+ <meta name=\"referrer\" content=\"no-referrer\">"
+"<link href=\"usual-org-front-matter.css\" rel=\"stylesheet\" type=\"text/css\" />" (ref:usualCSS)
+"<link href=\"org-notes-style.css\" rel=\"stylesheet\" type=\"text/css\" />" (ref:orgNotesCSS)
+"<link href=\"floating-toc.css\" rel=\"stylesheet\" type=\"text/css\" />" (ref:tocCSS)
+"<link href=\"blog-banner.css\" rel=\"stylesheet\" type=\"text/css\" />" (ref:bannerCSS)
+"<link rel=\"icon\" href=\"images/favicon.png\">")
+#+end_src
+
++ [[(usualCSS)][usual-org-front-matter.css]] badge:||success|usual-org-front-matter.css|css3 ::
+  Org-static-blog ignores any styling exported by Org, so let's bring that back
+  in. I just exported this file with the usual kbd:C-c_C-e_h_o, then saved the CSS
+  it produced.
+
++ [[(orgNotesCSS)][org-notes-style.css]] badge:||success|org-notes-style.css|css3 ::
+
+  I like the rose-style of this [[http://taopeng.me/org-notes-style/][org-notes-style]] for HTML export.  However, it
+  seems loading the CSS directly from its homepage does not work, so I've copied
+  the CSS file for my blog.
+
++ [[(tocCSS)][floating-toc.css]] badge:||success|floating-toc.css|css3 ::
+
+  I want to have an unobtrusive floating table of contents, see
+  §[[floating-toc]].
+
++ [[(bannerCSS)][blog-banner.css]] badge:||success|blog-banner.css|css3 ::
+
+  Finally, we want a beautiful welcome mat, see §[[blog-banner]].
+
+In addition, we have two more pieces we would like to add to the header: Support
+for /dynamic/ code-line highlighting, §[[blog-banner]], and support for using
+LaTeX-style notation to write mathematics, §[[MathJax-Support]].  We will use a
+[[https://github.com/alhassy/emacs.d#what-does-literate-programming-look-like][noweb-ref]] named =my-html-header= to refer to them, which are then catenated below.
+#+begin_src emacs-lisp -r :noweb yes :results raw -n
+ (setq org-static-blog-page-header
+  (concat
+   org-html-head-extra  ;; Alterd by ‘org-special-block-extras’
+   <<my-html-header>>
+   ))
+#+end_src
+# Using “html-header” as the noweb-ref caused the entirrity of the source
+# block, along with the #+begin…#+end to be included.
+
+#+begin_edcomm
+:ed: Warning
+
+The noweb-ref invocation =l <<𝓍𝓈>> r= expands into
+#+begin_src emacs-lisp :tangle no :noeval
+l 𝓍₀ r
+l 𝓍₁ r
+  ⋮
+l 𝓍ₙ r
+#+end_src
+Where the =𝓍ᵢ= are the lines referenced by =𝓍𝓈=.
+
+*As such, we had our reference call, above, in its own line!*
+#+end_edcomm
+
+* Blog Banner and Dynamic Code Highlighting
+  :PROPERTIES:
+  :CUSTOM_ID: Blog-Banner
+  :END:
+
+<<blog-banner>>
+
+I want to have a nice banner at the top of every page, which should link
+to useful parts of my blog.
+#+begin_src emacs-lisp -n
+(setq org-static-blog-page-preamble
+"<div class=\"header\">
+  <a href=\"https://alhassy.github.io/\" class=\"logo\">Life & Computing Science</a>
+  <br>
+    <a href=\"https://alhassy.github.io/AlBasmala\">AlBasmala</a>
+    <a href=\"https://alhassy.github.io/archive\">Archive</a>
+    <a href=\"https://alhassy.github.io/tags\">Tags</a>
+    <a href=\"https://alhassy.github.io/rss.xml\">RSS</a>
+    <a href=\"https://alhassy.github.io/about\">About</a>
+</div>")
+#+end_src
+
+Note that we could have been needlessly more generic by using, say,
+=(org-static-blog-get-absolute-url org-static-blog-rss-file)=,
+instead of hardcoding the links.
+:Also:
+org-static-blog-publish-url
+org-static-blog-publish-title
+:End:
+
+I want to style it as follows:
+
++ Line [[(headerHeader)]]: The banner is in a box at the top with some shadowing and
+  centred text using the =fantasy= font
++ Line [[(headerLogo)]]: The blog's title is large and bold
++ Line [[(headerAnchor)]]: All links in the banner are black
++ Line [[(headerHover)]]: When you hover over a link, it becomes blue
+
+#+begin_src css -r -n :tangle ~/blog/blog-banner.css :noeval -n
+.header { (ref:headerHeader)
+  /* Try to load ‘fantasy’ if possible, else try to load the others. */
+  font-family: fantasy, monospace, Times;
+  text-align: center;
+  overflow: hidden;
+  /* background-color: #f1f1f1 !important; */
+  /* background: #4183c4 !important; */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+.header a.logo { (ref:headerLogo)
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.header a { (ref:headerAnchor)
+  color: black;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.header a:hover { (ref:headerHover)
+  background-color: #ddd;
+  background-color: #fff;
+  color: #4183c4;
+}
+#+end_src
+
+Notice that as you hover over the references, such as [[(headerLogo)][this]], *the corresponding
+line of code is highlighted!* Within a =src= block, one uses the switches =-n -r=
+to enable references via line numbers, then declares ~(ref:name)~ on line
+and refers to it by =[[(name)][description]]=. Org-mode by default styles
+such highlighting.
+#+begin_details
+#+begin_src emacs-lisp :noweb-ref my-html-header :tangle no -n
+"<script type=\"text/javascript\">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+,*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = \"code-highlighted\";
+     elem.className   = \"code-highlighted\";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>"
+#+end_src
+#+end_details
+
+#+begin_edcomm
+:ed: Remark
+orange:TODO
+Before we move on, I'd like to have heavy red font for links.
+#+begin_src css :tangle ~/blog/blog-banner.css :noeval :tangle no -n
+a {color:#DD514C;text-decoration:none;font-weight:700}
+#+end_src
+But this causes the table of contents to be red, which I dislike ლ(ಠ益ಠ)ლ
+#+end_edcomm
+
+* MathJax Support --- $e^{i \cdot \pi} + 1 = 0$
+  :PROPERTIES:
+  :CUSTOM_ID: MathJax-Support
+  :END:
+
+<<MathJax-Support>>
+
+Org loads the [[https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference][MathJax]] display engine for mathematics whenever users
+write LaTeX-style math delimited by ~$...$~ or by =\[...\]=. Here is an example.
+
+#+begin_details org
+This is the CSS that Org loads by default.
+#+begin_src emacs-lisp :noweb-ref my-html-header :tangle no -n
+"<script type=\"text/x-mathjax-config\">
+    MathJax.Hub.Config({
+        displayAlign: \"center\",
+        displayIndent: \"0em\",
+
+        \"HTML-CSS\": { scale: 100,
+                        linebreaks: { automatic: \"false\" },
+                        webFont: \"TeX\"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: \"false\" },
+              font: \"TeX\"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: \"AMS\"},
+               MultLineWidth: \"85%\",
+               TagSide: \"right\",
+               TagIndent: \".8em\"
+             }
+});
+</script>
+<script type=\"text/javascript\"
+        src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML\"></script>
+"
+#+end_src
+#+end_details
+
+\[ p ⊓ q = p \quad ≡ \quad p ⊔ q = q \label{Golden-Rule}\tag{Golden-Rule}\]
+
+Look at \ref{Golden-Rule}, it says, when specialised to numbers, /the minimum
+of two items is the first precisely when the maximum of the two is the second/
+---d'uh!
+
+#+begin_edcomm
+:ed: Warning
+
+We can make an equation ℰ named 𝒩 and refer to it by ℒ by declaring
+=\[ℰ \tag{𝒩} \label{ℒ} \]= then refer to it with =\ref{ℒ}=.  However, if 𝒩 contains
+Unicode, then the reference will not generally be ‘clickable’ ---it wont take
+you to the equation's declaration site.  For example, \ref{⊑-Definition} below
+has Unicode in both its tag and label, and so clicking that link wont go
+anywhere, whereas \ref{Order-Definition} has Unicode only in its tag, with the
+label being =\label{Order-Definition}=, and clicking it takes you to the formula.
+
+\[ p ⊑ q \quad ≡ \quad p ⊓ q = p \tag{⊑-Definition}\label{⊑-Definition} \]
+\[ p ⊑ q \quad ≡ \quad p ⊔ q = q \tag{⊑-Definition}\label{Order-Definition} \]
+
+#+end_edcomm
+
+The following rule for anchors =a {⋯}= resurrects =\ref{}= calls via MathJax
+---which =org-notes-style= kills.
+#+begin_src css :tangle ~/blog/blog-banner.css :noeval
+a { white-space: pre !important; }
+#+end_src
+
+* Ξ: Floating /Table of Contents/
+  :PROPERTIES:
+  :CUSTOM_ID: Floating-TOC
+  :END:
+
+<<floating-toc>>
+
+I would like to have a table of contents that floats so that it is accessible to
+the reader in case they want to jump elsewhere in the document quickly
+---possibly going to the top of the document.
+
+When we write =#+toc: headlines 2= in our Org, HTML export produces the following.
+#+begin_src html -n  :exports code :tangle no :noeval
+<div id="table-of-contents">
+  <h2>Table of Contents</h2>
+  <div id="text-table-of-contents">
+    <ul>
+      <li> section 1 </li>
+             ⋮
+      <li> section 𝓃 </li>
+    </ul>
+  </div>
+</div>
+#+end_src
+Hence, we can style the table of contents by writing rules that target those
+=id='s. We use the following rules, adapted from [[https://orgmode.org/worg/][the Worg community]].
+#+begin_src css -n  :tangle ~/blog/floating-toc.css :noeval
+/*TOC inspired by https://orgmode.org/worg/ */
+#table-of-contents {
+    /* Place the toc in the top right corner */
+    position: fixed; right: 0em; top: 0em;
+    margin-top: 120px; /* offset from the top of the screen */
+
+    /* It shrinks and grows as necessary */
+    padding: 0em !important;
+    width: auto !important;
+    min-width: auto !important;
+
+    font-size: 10pt;
+    background: white;
+    line-height: 12pt;
+    text-align: right;
+
+    box-shadow: 0 0 1em #777777;
+    -webkit-box-shadow: 0 0 1em #777777;
+    -moz-box-shadow: 0 0 1em #777777;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+
+    /* Ensure doesn't flow off the screen when expanded */
+    max-height: 80%;
+    overflow: auto;}
+
+/* How big is the text “Table of Contents” and space around it */
+#table-of-contents h2 {
+    font-size: 13pt;
+    max-width: 9em;
+    border: 0;
+    font-weight: normal;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    padding-top: 0.05em;
+    padding-bottom: 0.05em; }
+
+/* Intially have the TOC folded up; show it if the mouse hovers it */
+#table-of-contents #text-table-of-contents {
+    display: none;
+    text-align: left; }
+
+#table-of-contents:hover #text-table-of-contents {
+    display: block;
+    padding: 0.5em;
+    margin-top: -1.5em; }
+#+end_src
+
+# /* TOC entries, unnumbered lists, should not be indented too much */
+# #text-table-of-contents ul { padding-left: 20px }
+
+#+begin_edcomm org
+:ed: Strange
+If I zoom in over 100% in my browser, the toc disappears until I zoom out.
+#+end_edcomm
+
+Since the table of contents floats, the phrase /Table of Contents/ is rather
+‘in your face’, so let's use the more subtle Greek [[https://en.wikipedia.org/wiki/Xi_(letter)][letter]] =Ξ=.
+#+begin_src emacs-lisp -n
+(advice-add 'org-html--translate :before-until 'display-toc-as-Ξ)
+
+;; (advice-remove 'org-html--translate 'display-toc-as-Ξ)
+
+(defun display-toc-as-Ξ (phrase info)
+  (when (equal phrase "Table of Contents")
+    (s-collapse-whitespace
+    " <a href=\"javascript:window.scrollTo(0,0)\"
+        style=\"color: black !important; border-bottom: none !important;\"
+        class=\"tooltip\"
+        title=\"Go to the top of the page\">
+      Ξ
+    </a> ")))
+#+end_src
+
+How did I get here?
+1. How does Org's HTML export TOCs? ⇒ doc:org-html-toc
+2. Looking at its source, we see doc:org-html--translate being
+   the only place mentioning the string /Table of Contents/
+3. Let's advise it, with doc:advice-add, to return /Ξ/
+   /only/ on that particular input string.
+4. Joy ♥‿♥
+
+( The Unicode whitespace ‘ ’ before and after =Ξ= is to
+appease the [[clickable-headlines][clickable headlines utility]], below. )
+
+* Ensuring Useful HTML Anchors
+  :PROPERTIES:
+  :CUSTOM_ID: Ensuring-Useful-HTML-Anchors
+  :END:
+
+<<ensuring-useful-html-anchors>>
+#+INCLUDE: "~/.emacs.d/init.org::*Ensuring Useful HTML Anchors"  :only-contents t
+
+| /This section has been =#+include='d from my init.org/ |
+#+begin_center
+badge:A_Life_Configuring|Emacs|green|https://github.com/alhassy/emacs.d|gnu-emacs
+#+end_center
+
+* Clickable Headlines
+  :PROPERTIES:
+  :CUSTOM_ID: Clickable-Headlines
+  :END:
+
+<<clickable-headlines>>
+#+INCLUDE: "~/.emacs.d/init.org::*Clickable Headlines" :only-contents t
+
+| /This section has been =#+include='d from my init.org/ |
+#+begin_center
+badge:A_Life_Configuring|Emacs|green|https://github.com/alhassy/emacs.d|gnu-emacs
+#+end_center
+
+* HTML Footer: Comments
+  :PROPERTIES:
+  :CUSTOM_ID: HTML-Footer
+  :END:
+
+<<Comments>>
+
+At the bottom of every page, let's have a licensing stub
+and a [[https://disqus.com/][Disqus]]-powered comments section.
+#+begin_src emacs-lisp -n
+(setq org-static-blog-page-postamble
+(s-collapse-whitespace (s-replace "\n" ""
+"
+<center>
+  <a rel=\"license\" href=\"https://creativecommons.org/licenses/by-sa/3.0/\">
+     <img alt=\"Creative Commons License\" style=\"border-width:0\"
+          src=\"https://i.creativecommons.org/l/by-sa/3.0/88x31.png\"/>
+  </a>
+
+  <br/>
+  <span xmlns:dct=\"https://purl.org/dc/terms/\"
+        href=\"https://purl.org/dc/dcmitype/Text\"
+        property=\"dct:title\" rel=\"dct:type\">
+     <em>Life & Computing Science</em>
+  </span>
+
+  by
+  <a xmlns:cc=\"https://creativecommons.org/ns#\"
+  href=\"https://alhassy.github.io/\"
+  property=\"cc:attributionName\" rel=\"cc:attributionURL\">
+    Musa Al-hassy
+  </a>
+
+  is licensed under a
+  <a rel=\"license\" href=\"https://creativecommons.org/licenses/by-sa/3.0/\">
+    Creative Commons Attribution-ShareAlike 3.0 Unported License.
+  </a>
+</center>
+
+<div id=\"disqus_thread\"></div>
+<script type=\"text/javascript\">
+/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+var disqus_shortname = 'life-and-computing-science';
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the
+    <a href=\"http://disqus.com/?ref_noscript\">comments powered by Disqus.</a></noscript>
+<a href=\"http://disqus.com\" class=\"dsq-brlink\">comments powered by <span class=\"logo-disqus\">Disqus</span></a>")))
+#+end_src
+
+* Article Headers & Images
+  :PROPERTIES:
+  :CUSTOM_ID: Images
+  :END:
+
+<<Images>>
+
+Every article declaratively has an associated image ^_^
+- If none declared, we use =emacs-birthday-present.png= :-)
+- Images are loaded from the =~/blog/images/= directory.
+
+#+begin_src emacs-lisp -n
+(cl-defun my/org-static-blog-assemble-image (file)
+"Assemble the value of ‘#+fileimage: image width height border?’ as an HTML form."
+(with-temp-buffer
+  (insert-file-contents file)
+  (goto-char 0)
+  (search-forward-regexp "^\\#\\+fileimage: \\(.*\\)" nil t)
+  (-let [(image width height no-border?)
+         (s-split " " (substring-no-properties
+                       (or (match-string 1)
+                           "emacs-birthday-present.png")))]
+    (setq width (or width 350))
+    (setq height (or height 350))
+    (setq no-border? (if no-border? "" "style=\"border: 2px solid black;\""))
+    (format "<center> <img src=\"images/%s\" alt=\"Article image\"
+            %s width=\"%s\" height=\"%s\" align=\"top\" /> </center>"
+            image no-border? width height))))
+#+end_src
+
+To make use of =org-notes-style=, I need the title to use the =title= class
+but =org-static-blog= uses the =post-title= blog, so I'll override the
+=org-static-blog= preamble method to simply use an auxiliary div.
+- Along the way, I'll position the article image under the article's title.
+- Line [[(fixTitle)]]: =org-notes-style= has too much vertical space after the title,
+  let's reduce it so that the article's data can follow it smoothly.
+# - Line [[(BR)]]: =org-static-blog= does not support Org-markup in the title, since it
+#  just dumps the title in-place; here I provide a support for just =<br>=.
+#+begin_src emacs-lisp -r -n -n
+(defun org-static-blog-post-preamble (post-filename)
+  "Returns the formatted date and headline of the post.
+This function is called for every post and prepended to the post body.
+Modify this function if you want to change a posts headline."
+  (concat
+   ;; The title
+   "<h1 class=\"post-title\">"
+   "<div class=\"title\" style=\"margin: 0 0 0 0 !important;\">"  (ref:fixTitle)
+   "<a href=\"" (org-static-blog-get-post-url post-filename) "\">"
+   (org-static-blog-get-title post-filename)
+   "</a>"
+   "</h1></div>"
+   ;; Move to the footer? Near the ‘Tags’ of the article?
+   ;; The date
+   "<div style=\"text-align: center;\">"
+   (format-time-string (org-static-blog-gettext 'date-format)
+                       (org-static-blog-get-date post-filename))
+   "</div>"
+   ;; The article's image
+   (my/org-static-blog-assemble-image post-filename)
+   "<br><center><strong>Abstract</strong></center>"))
+#+end_src
+
+
+# Before we move on, Org-notes adds extra whitespace after the title, let's avoid
+# that.
+# #+begin_src css :tangle ~/blog/blog-banner.css :noeval
+#  .title { margin: 0 0 0 0 !important; }
+# #+end_src
+
+* Article Footers
+  :PROPERTIES:
+  :CUSTOM_ID: Article-Footers
+  :END:
+
+<<footers>>
+
+#+begin_src emacs-lisp -n
+(defun org-static-blog-post-postamble (post-filename)
+  "Returns the tag list and comment box at the end of a post.
+This function is called for every post and the returned string is
+appended to the post body, and includes the tag list generated by
+followed by the HTML code for comments."
+;; Generate an htmlized version of the source file
+(let ((org-hide-block-startup nil))
+  (with-temp-buffer
+    (find-file post-filename)
+    ;; (insert "\n#+HTML_HEAD: <link href=\"../doom-solarized-light.css\" rel=\"stylesheet\">\n")
+    (org-mode)
+    (outline-show-all)
+    (switch-to-buffer (htmlize-buffer))
+    (write-file (concat "~/blog/" (f-base post-filename) ".org.html"))
+    (kill-buffer)))
+  ;; Actual bottom matter
+  (concat
+   ;; Tags
+   "<div class=\"taglist\">"
+   (org-static-blog-post-taglist post-filename)
+   "</div>"
+   ;;
+   "<center><strong> Generated by Emacs and Org-mode (•̀ᴗ•́)و </strong></center>"
+   ;; Link to source and history
+   "<center>"
+   ;; "<a href=\"https://raw.githubusercontent.com/alhassy/alhassy.github.io/master/posts/"
+   "<a href=\""
+   (f-base post-filename) ".org.html\"><img
+   src=\"https://img.shields.io/badge/-Source-informational?logo=read-the-docs\"></a>"
+   "&emsp;"
+   "<a href=\"https://github.com/alhassy/alhassy.github.io/commits/master/"
+   "posts/" (f-base post-filename) ".org\"><img
+   src=\"https://img.shields.io/badge/-History-informational?logo=github\"></a>"
+   "<br>"
+   "<a href=\"https://www.buymeacoffee.com/alhassy\"><img src="
+   "\"https://img.shields.io/badge/-buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee\">"
+   "</a>"
+   "</center>"
+   ;; Comments
+   (if (string= org-static-blog-post-comments "")
+       ""
+     (concat "\n<div id=\"comments\">"
+             org-static-blog-post-comments
+             "</div>"))
+
+   ;; ReadRemaining.js ∷ How much time is left to finish reading this article?
+   ;;
+  ;; jQuery already loaded by org-special-block-extras.
+  ;; "<script
+  ;; src=\
+  ;; "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>"
+ "<link rel=\"stylesheet\" href=\"readremaining.js-readremainingjs/css/rr_light.css\"
+     type='text/css'/>
+  <script
+     src=\"readremaining.js-readremainingjs/src/readremaining.jquery.js\"></script>
+  <script src='readremaining.js/src/readremaining.jquery.js'
+     type='text/javascript'></script>
+  <script type=\"text/javascript\"> $('body').readRemaining({showGaugeDelay : 10,
+     showGaugeOnStart : true}); </script>"))
+#+end_src
+
+[[https://aerolab.github.io/readremaining.js/][ReadRemaining.js]] gives us a little floating clock on the bottom left of the
+screen which says, e.g., /4m 9s left/ when reading an article.
++ It tells us how much time is left before the article is done.
++ The time adjusts /dynamically/ as the user scrolls down ---but not up.
++ Apparently it has to be at the end of the HTML =<body>=, otherwise it wont work
+  for me.
+  - It may be best to avoid loading jQuery multiple times;
+    see [[https://alhassy.github.io/org-special-block-extras/#tooltipster][here]] for the necessary conditional.
+
+#+begin_edcomm
+:ed: ლ(ಠ益ಠ)ლ
+
+I want to consistently use the same theme to htmlize Org source, rather than the
+/current session's/ theme.
+#+end_edcomm
+
+* The Index Page
+  :PROPERTIES:
+  :CUSTOM_ID:  multipost-pages
+  :END:
+
+<<Index>>
+
+# The =org-static-blog-with-find-file= macro does a lot of ‘in your face’ writing,
+# which really ought to be hidden from sight.
+
+I'd like to be able to quickly change the blurb on the index page, so we make a
+variable for that ---consisting of Org-markup.
+#+begin_src emacs-lisp -n
+(setq index-content-header
+  (concat
+   "Here are some of my latest thoughts..."
+   " badge:Made_with|Lisp such as doc:thread-first and doc:loop (•̀ᴗ•́)و"
+   " tweet:https://alhassy.github.io/"))
+#+end_src
+
+# The existing org-static-blog-assemble-index is really fast,
+# since it just dumps articles wholesale into the landing page; not ideal.
+# I'd rather have a ‘preview’ of articles.
+
+The index page is a multipost page, so I'll override the
+=org-static-blog-assemble-multipost-page= method so that articles are
+summarised by their title, data & image, ‘abstract’, and a read-more badge.
+- Every article is intended to have a section named =Abstract=, whose contents
+  are used as the preview of the article. See §[[new-article]] for a template.
+#+begin_src emacs-lisp -n
+(setq show-reading-time nil)
+
+(defun org-static-blog-assemble-multipost-page
+    (pub-filename post-filenames &optional front-matter)
+  "Assemble a page that contains multiple posts one after another.
+Posts are sorted in descending time."
+  (setq post-filenames
+        (sort post-filenames (lambda (x y)
+                               (time-less-p (org-static-blog-get-date y)
+                                            (org-static-blog-get-date x)))))
+  (with-temp-buffer
+    (insert
+     (concat
+      "#+EXPORT_FILE_NAME: " pub-filename
+      "\n#+options: toc:nil title:nil html-postamble:nil"
+      "\n#+title: " (if (equal "index" (f-base pub-filename))
+                        org-static-blog-publish-title
+                        (f-base pub-filename))
+      "\n#+begin_export html\n "
+        org-static-blog-page-preamble
+        org-static-blog-page-header
+        (if front-matter front-matter "")
+      "\n#+end_export"
+
+      "\n\n"
+      (if (equal "index" (f-base pub-filename))
+          (format "#+begin_export html\n%s\n#+end_export\n%s"
+                  org-static-blog-page-header index-content-header)
+        "")
+
+      "\n\n" ;; abstracts of posts
+      (thread-last post-filenames
+        (--map
+         (format
+          (concat
+           ;; ⟨0⟩ Title and link to article
+           "#+HTML: <h2 class=\"title\"><a href=\"%s\"> %s</a></h2>"
+           ;; ⟨1⟩ Tags and reading time
+           "\n#+begin_center\n%s\n%s\n#+end_center"
+           ;; ⟨2⟩ Article image
+           "\n@@html:%s@@"
+           ;; ⟨3⟩ Preview
+           "\n#+INCLUDE: \"%s::*Abstract\" :only-contents t"
+           ;; ⟨4⟩ “Read more” link
+           "\n@@html:<p style=\"text-align:right\">@@"
+           " badge:Read|more|green|%s|read-the-docs @@html:</p>@@")
+          ;; ⟨0⟩ Title and link to article
+          (concat org-static-blog-publish-url (f-base it))
+          (org-static-blog-get-title it)
+          ;; ⟨1⟩ Tags and reading time
+          (concat octoicon:tag " "
+                  (s-join " "
+                          (--map (format "badge:|%s|grey|%stag-%s.html"
+                                         (s-replace "-" "_" it)
+                                         org-static-blog-publish-url it)
+                                 (org-static-blog-get-tags it))))
+          (if (not show-reading-time)
+              ""
+            (format "\n%s %s mins read"
+                    octoicon:clock
+                    (with-temp-buffer (insert-file-contents it)
+                                      (org-ascii-export-as-ascii)
+                                      (setq __x
+                                            (count-words (point-min) (point-max)))
+                                      (kill-buffer "*Org ASCII Export*")
+                                      (delete-other-windows)
+                                      (/ __x 200)))) ;; 200 words per minute reading
+          ;; ⟨2⟩ Article image
+          (my/org-static-blog-assemble-image it)
+          ;; ⟨3⟩ Preview
+          it
+          ;; ⟨4⟩ “Read more” link
+          (concat org-static-blog-publish-url (f-base it))))
+        (s-join "\n\n"))
+
+      ;; bottom matter
+      "\n#+begin_export html:\n"
+      "<hr><hr> <div id=\"archive\">"
+      "<a href=\""
+      (org-static-blog-get-absolute-url org-static-blog-archive-file)
+      "\">" (org-static-blog-gettext 'other-posts) "</a>"
+      "</div>"
+      "</div>"
+      "<div id=\"postamble\" class=\"status\">"
+      org-static-blog-page-postamble
+      "</div>"
+      "\n#+end_export"))
+    (org-mode)
+    (org-html-export-to-html)))
+#+end_src
+
+* Curvy Source Blocks
+  :PROPERTIES:
+  :CUSTOM_ID: Curvy-Source-Blocks
+  :END:
+
+<<curvy-blocks>>
+
+The =border-radius= property defines the radius of an
+element's corners, we use it to make curvy looking source blocks.
+Its behaviour [[https://www.w3schools.com/cssref/css3_pr_border-radius.asp][changes]] depending on how many arguments it is given.
+- We also style the code block's label to be curvy.
+- Both =.src= and =pre.src:before= are defined by Org.
+
+#+begin_src css -r -n :tangle ~/blog/blog-banner.css :noeval -n
+.src {
+  border: 0px !important;
+  /* 50px for top-left and bottom-right corners;
+     20px for top-right and bottom-left cornerns. */
+  border-radius: 50px 20px !important;
+}
+
+pre.src:before {
+    /* border: 0px !important; */
+    /* background-color: inherit !important; */
+    padding: 3px !important;
+    border-radius: 20px 50px !important;
+    font-weight:700
+}
+
+ /* wrap lengthy lines for code blocks */
+ pre{white-space:pre-wrap}
+
+ /* Also curvy inline code with ~ ⋯ ~ and = ⋯ = */
+ code {
+     /* background: Cyan !important; */
+     background: pink !important;
+     border-radius: 7px;
+     /* border: 1px solid lightgrey; background: #FFFFE9; padding: 2px */
+ }
+#+end_src
+
+Code such as ~(= 2 (+ 1 1))~ now sticks out with a cyan background ♥‿♥
+
+#+begin_src css :tangle ~/blog/blog-banner.css :noeval -n
+ table {
+     background: pink;
+     border-radius: 10px;
+     /* width:90% */
+
+     border-bottom: hidden;
+     border-top: hidden;
+
+     display: table !important;
+
+     /* Put table in the center of the page, horizontally. */
+     margin-left:auto !important;margin-right:auto !important;
+
+     font-family:"Courier New";
+     font-size:90%;
+ }
+
+ /* Styling for ‘t’able ‘d’ata and ‘h’eader elements */
+ th, td {
+     border: 0px solid red;
+ }
+#+end_src
+#+caption: Example table
+| Prime | 2^{Prime} |
+|-------+-----------|
+|  <c>  |    <c>    |
+|   1   |     2     |
+|   2   |     4     |
+|   3   |     8     |
+|   5   |    32     |
+|   7   |    128    |
+|  11   |   2048    |
+#+TBLFM: $2='(expt 2 $1);N
+
+# For the line wrapping, it may be useful to have
+# =#+PROPERTY: header-args -n= at the top of the file
+# to have all blocks displayed with line numbers.
+
+#+begin_src emacs-lisp
+;; MA: Relocate this to my init.
+;; Table captions should be below the tables
+(setq org-html-table-caption-above nil
+      org-export-latex-table-caption-above nil)
+#+end_src
+
+#+begin_details org
+:title: Let's show folded, details, regions with a nice greenish colour
+
+MA: Relocate the following to =org-special-block-extras=.
+#+begin_src css :tangle ~/blog/blog-banner.css :noeval -n
+details {
+  padding: 1em;
+  background-color: #e5f5e5;
+  /* background-color: pink; */
+  border-radius: 15px;
+  color: hsl(157 75% 20%);
+  font-size: 0.9em;
+  box-shadow: 0.05em 0.1em 5px 0.01em  #00000057;
+}
+#+end_src
+
+#+end_details
+
+* Getting Started: =my/blog/new-article=
+  :PROPERTIES:
+  :CUSTOM_ID: my-blog-new-article
+  :END:
+<<new-article>>
+
+Helper function to make a new article.
+#+BEGIN_SRC emacs-lisp -n
+(defvar my/blog/tags
+  '(emacs faith category-theory order-theory
+    lisp types packages haskell agda
+    c frama-c program-proving)
+  "Tags for my blog articles.")
+
+;; Use C-SPC to select multiple items
+
+(defun my/blog/new-article ()
+  "Make a new article for my blog; prompting for the necessary ingredients.
+
+If the filename entered already exists, we simply write to it.
+The user notices this and picks a new name."
+  (interactive)
+  (let (file desc)
+
+    (thread-last org-static-blog-posts-directory
+      f-entries
+      (mapcar #'f-filename)
+      (completing-read "Filename (Above are existing): ")
+      (concat org-static-blog-posts-directory)
+      (setq file))
+
+    ;; For some reason, ‘find-file’ in the thread above
+    ;; wont let the completing-read display the possible completions.
+    (find-file file)
+
+    (insert "#+title: " (read-string "Title: ")
+            "\n#+author: " user-full-name
+            "\n#+email: "  user-mail-address
+            "\n#+date: " (format-time-string "<%Y-%m-%d %H:%M>")
+            "\n#+filetags: " (s-join " " (helm-comp-read "Tags: "
+                                                         my/blog/tags
+                                                         :marked-candidates t))
+            "\n#+fileimage: " (completing-read
+                               "Image: "
+                               (mapcar #'f-filename (f-entries "~/blog/images/")))
+            "\n#+include: ../MathJaxPreamble.org"
+            "\n#+description: "
+               (setq desc (read-string "Article Purpose: "))
+            "\n\n* Abstract :ignore: \n" desc
+            "\n\n* ???")))
+#+END_SRC
+
+# *Photograph Credit                                                  :ignore:
+# #+HTML: <small> <center>
+# ( Photo by ??? on [[https://unsplash.com/][Unsplash]] )
+# #+HTML: </center> </small>
+# "Download free do whatever you want high-resolution photos from Unsplash."
+
+# +OPTIONS: html-postamble:nil toc:nil d:nil
+# +SOURCE: alterntive sources for articles from other repos?
+
+
+<<unfurling>>
+
+The =#+description= is exported as HTML meta-data which is used to
+‘unfurl’ a link to an article: When a link to an article is pasted
+in a social media website, it /unfurls/ into a little card showing
+some information about the link, such as its image, description, and author.
+- For long descriptions, one can use multiple =#+description= lines;
+  I'd like to have a terse one-liner with a longer description in the
+  =Abstract= heading.
+
+** COMMENT Example calculation from that MathJax Setup?
+   :PROPERTIES:
+   :CUSTOM_ID: COMMENT-Example-calculation-from-that-MathJax-Setup
+   :END:
+
+Maybe move the MathJax setup into AlBasmala directly, then include it?
+Or, maybe incorporate the MathJax setup via Emacs directly ♥‿♥
+Such as org-html-head-extra
+
+\begin{calc}
+   x \;⊓\; ¬ x \quad=\quad ⊥
+\step{ \ref{⊑-antisymmetric} }
+   (x \;⊓\; ¬ x) \sqleqs ⊥
+   \landS ⊥ \sqleqs (x \;⊓\; ¬ x)
+\step{ \ref{Bottom Element} }
+   x \;⊓\; ¬ x \sqleqS ⊥
+\step{ \ref{Modus Ponens} }
+   \mathsf{true}
+\end{calc}
+
+Then,
+\[\eqn{Constructive De Morgan}{¬(x \;⊔\; y) \quad=\quad ¬ x \;⊓\; ¬ y}\]
+
+* Publishing with =[C-u C-u] C-c C-b=
+  :PROPERTIES:
+  :CUSTOM_ID: Publishing-with-C-u-C-u-C-c-C-b
+  :END:
+:Hide_fornow:
+  #+begin_src emacs-lisp :tangle no -n
+;; No lock files, for now
+;; The “.#file” files
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html#Interlocking
+(setq create-lockfiles nil)
+#+end_src
+:End:
+
+#+begin_src emacs-lisp -r -n
+;; Override all minor modes that use this binding.
+(bind-key* (kbd "C-c C-b")
+  (lambda (&optional prefix)
+"C-c C-b        ⇒ Publish current buffer
+C-u C-c C-b     ⇒ Publish entire blog
+C-u C-u C-c C-b ⇒ Publish entire blog; re-rendering all blog posts
+                  (This will take time!)
+"
+     (interactive "P")
+     (pcase (or (car prefix) 0)
+       (0  (org-static-blog-publish-file (f-full (buffer-name))))
+           ;; (browse-url-of-file (format "%s%s.html" org-static-blog-posts-directory
+           ;;                            (f-base (buffer-name))))
+       ;; Apparently I have to publish the current buffer before trying
+       ;; to publish the blog; otherwise I got some errors.
+       (4  (org-static-blog-publish-file (f-full (buffer-name)))
+           (org-static-blog-publish))
+       (16 ;; (org-static-blog-publish t) ⇒ Crashes.
+           ;; Delete all .html files, except “about”
+           (thread-last (f-entries "~/blog/")
+             (--filter (and (equal (f-ext it) "html")
+                            (not (member (f-base it) '("about")))))
+             (--map (f-delete it))) (ref:delAll)
+           ;; Publish as usual
+           (org-static-blog-publish-file (f-full (buffer-name)))
+           (org-static-blog-publish)))))
+#+end_src
+
+Line [[(delAll)]]: To re-render an article, just remove its corresponding .html file ;-)
+
+* COMMENT Ideas
+  :PROPERTIES:
+  :CUSTOM_ID: COMMENT-todo
+  :END:
+
+
+# teal:TODO: Make C-u C-c C-b switch to a particular theme so all exported html stuffs
+# look the same ^_^
+
+
+# Idea: Make the tags at the bottom be badges, alter/advice the corresponding
+# function
+# Idea: Add “last updated” date to footer?
+
++ in the index, under each article's name:
+  - twitter link ;-)
+    - per article via advice
+
+ #+begin_export html
+ <footer class="container">
+     <div class="site-footer">
+
+         <div class="copyright pull-left">
+             Powered by
+             <a href="https://github.com/alhassy/emacs.d">Emacs</a>
+         </div>
+
+         <a href="https://github.com/alhassy" target="_blank" aria-label="view source code">
+             octicon-github
+         </a>
+
+         <div class="pull-right">
+             <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+         </div>
+     </div>
+ </footer>
+ #+end_export
+
+ + Footer should include
+   - See Org Source; see HTML source
+   - buy-me-a-coffee
+
+#+html: <hr>
+
+* The name: [[https://en.wikipedia.org/wiki/Basmala][al-bas-mala]]
+  :PROPERTIES:
+  :CUSTOM_ID:  the-name
+  :END:
+
+The prefix /al/ is the Arabic definite particle which may correspond to English's /the/;
+whereas /basmala/ refers to a beginning.
+
+That is, this is a variation on the traditional [[https://en.wikipedia.org/wiki/%22Hello,_World!%22_program]["hello world"]] ;-)
+
+* COMMENT Old Jekyll Setup :posterity:terrible:
+  :PROPERTIES:
+  :CUSTOM_ID: COMMENT-Old-Jekyll-Setup
+  :header-args:    :noeval
+  :END:
+Write in Org-mode and generate coloured markdown for Jekyll usage
+
+# Usage ∷ Begin blog server then load AlBasmala, then edit & preview.
+#
+# (shell-command "cd ~/alhassy.github.io/ ; bundle exec jekyll serve &")
+# (find-file "~/alhassy.github.io/content/AlBasmala.el")
+# (preview-article :browser t)
+# (preview-article)
+
+** Server Setup
+   :PROPERTIES:
+   :CUSTOM_ID: Server-Setup
+   :END:
+
+ When drafting, it's ideal to be able to inspect the resulting web article.
+ To do so, we may initialise the Jekyll server as follows.
+ #+begin_src emacs-lisp :tangle no
+(shell-command "cd ~/alhassy.github.io/ ; bundle exec jekyll serve &")
+ #+end_src
+
+ #+RESULTS:
+ : #<window 328 on *Org-Babel Error Output*>
+
+ In order to be an Org only interface, let's remove this shell invocation from
+ the user's view --as an Org user, they need not be forced to learn such Jekyll intricacies.
+
+ #+begin_src emacs-lisp
+(defvar jekyll-served nil "Documents whether the blog server has begun.")
+
+(defun ensure-blog-is-serving ()
+  "Ensure that the server has begun."
+   (unless jekyll-served
+      (shell-command "cd ~/alhassy.github.io/ ; bundle exec jekyll serve &")
+      (setq jekyll-served t)))
+ #+end_src
+
+ #+RESULTS:
+ : ensure-blog-is-serving
+
+ Super simple, but hides an annoying step & layer from the user.
+
+** ~file~ Symbols
+   :PROPERTIES:
+   :CUSTOM_ID: file-Symbols
+   :END:
+
+ We will look at various generated files revolving around the given file,
+ so let us generate the necessary variables that refer to such names.
+
+ First off, some useful libraries.
+ #+BEGIN_SRC emacs-lisp
+(require 'dash) ;; A modern list library for Emacs
+(require 's)    ;; String processing library.
+ #+END_SRC
+
+ #+RESULTS:
+ : s
+
+ Now, let's make a function that produces our variables.
+ This way we avoid tedious repetition of a particular pattern.
+ #+BEGIN_SRC emacs-lisp
+(cl-defun make-file-extension-variables (&key prefix name extensions)
+  " Produce symbols ‘prefix.ext’ whose value is the string ‘name.ext’, where
+    ‘ext’ range over the list ‘extensions’.
+
+    Both ‘prefix’ and ‘name’ should be strings.
+
+    I insist that the arguments be keywords, “:prefix, :name, :extensions”,
+    since I currently feel that this is more informative.
+    All three pieces need to be there, otherwise no variables are formed.
+    Success is signalled by the message string ”new filename variables created”.
+
+    Moreover, these symbols are local to the current buffer;
+    in-particular, their values cannot be altered from other buffers.
+  "
+  (and prefix name
+    (dolist (ext extensions (message "new filename variables created"))
+      (let* ((name.ext (concat name "." ext))
+         (symbol   (intern (concat prefix "." ext))))
+       (set symbol name.ext)
+       ;; (make-local-variable symbol)
+       ;; Undesirable since I want to use these names in other buffers.
+      ))))
+ #+END_SRC
+
+ #+RESULTS:
+ : make-file-extension-variables
+
+ :Example_of_locals_in_elisp:
+ #+BEGIN_SRC emacs-lisp :tangle no
+(setq bar "noah")          ;; All buffers can access this variable, with only this value as default value.
+(make-local-variable 'bar) ;; All future setq's only affect this buffer.
+(setq bar "rab")
+
+;; As such, the following approach makes a variable local to begin with.
+
+(make-local-variable 'foo) ;;
+(setq foo "woah")
+ #+END_SRC
+
+ #+RESULTS:
+ : woah
+
+ :End:
+
+ With that in hand, let's actually make the ~file.*~ variables.
+ #+BEGIN_SRC emacs-lisp
+(setq AbsNAME (file-name-sans-extension buffer-file-name))
+(setq NAME (file-name-sans-extension (buffer-name)))
+
+(make-file-extension-variables
+   :prefix     "file"
+   :name       NAME
+   :extensions '("org" "el" "src" "tex" "pdf" "html"))
+ #+END_SRC
+
+ #+RESULTS:
+ : new filename variables created
+
+ Finally, it would be nice to know where the blog repository lives.
+ #+BEGIN_SRC emacs-lisp
+(defvar blogrepo "~/alhassy.github.io/"
+    "The path to the blog repository on a local machine.")
+
+(defvar blogrepo-posts "~/alhassy.github.io/_posts/"
+    "The path to the blog repository's posts directory.")
+
+(defvar blogrepo-file.pdf (concat "../assets/pdfs/" file.pdf) ;; (concat "~/alhassy.github.io/assets/pdfs/" file.pdf)
+  "The path to the blog repository where the generated PDF should live.")
+
+;; Make these variables local to the current buffer.
+;; Undesirable since I'd like to utlise these in other buffers.
+;; (make-local-variable 'blogrepo)
+;; (make-local-variable 'blogrepo-posts)
+;; (make-local-variable 'blogrepo-file.pdf)
+ #+END_SRC
+
+ #+RESULTS:
+ : blogrepo-file\.pdf
+
+ Before we close we need Jekyll relevant names.
+ #+begin_src emacs-lisp
+(defvar jekyll.name nil
+  "The formal name of the resulting Jekyll blog article.")
+
+(defvar jekyll.name.md nil
+  "The formal markdown of the resulting Jekyll blog article.")
+ #+end_src
+
+ #+RESULTS:
+ : jekyll\.name\.md
+
+** Get Org Keywords
+   :PROPERTIES:
+   :CUSTOM_ID: Get-Org-Keywords
+   :END:
+
+ We want to be able to access ~#+key: value~ pairs from the article org source
+ as a variable ~org.key~. We also allow as input default values, since the user
+ may not have provided values for them.
+
+ #+begin_src emacs-lisp
+(defvar albasmala/keywords
+ `(("title"       . nil)
+   ("date"        . ,(format-time-string "%Y-%m-%d"))
+   ("author"      . nil)
+   ("image"       . nil)
+   ("imageheight" . 142)
+   ("imagewidth"  . 142)
+   ("categories"  . nil)
+   ("sourcefile"  .
+    ,(concat "https://raw.githubusercontent.com/alhassy/alhassy.github.io/master/content/"
+        (buffer-name)))
+   ("nopdf"              . nil)
+   ("nomodificationdate" . nil)
+   ("draft"              . nil))
+ "This list contains tuples denoting a ‘property’ and it's ‘default’ value.
+  These are the keywords that the user of this AlBasmala setup should utilise.
+
+  For example, if the user does not provide a ‘date’, then one is provided,
+  for them; the default date.
+
+  Note that ‘sourcefile’ refers to the URL to the raw master location of the blog
+  repository by default, but it's useful for the user to set it when the file is
+  associated with a different repoistory. The URL should begin ‘https://⋯’.
+
+  By default we produce a PDF and link to it from the article.
+  If ‘nopdf’ is set to a non-nil value, then no PDF is generated
+  --which may be usefull since making a pdf takes time, which may not be desirable
+  while drafting. Likewise, we always produce the most recent modification date,
+  unless instructed otherwise. --c.f., ‘draft’.
+
+  The ‘draft’ variable is useful since it puts the word DRAFT alongside
+  a generated number when drafting so as to ensure you're actually
+  re-generating the article --rather than loading a previously generated one.
+  When drafting, no PDF is generated.
+
+  Warning: The values cannot have links; e.g., embedding a link in the
+  value of ‘author’ renders this script useless.
+ ")
+ #+end_src
+
+ #+RESULTS:
+ : albasmala/keywords
+
+ For each keyword, let's uniformly produce these symbols, attempt to obtain their values,
+ and use the defaults otherwise.
+
+ #+begin_src emacs-lisp
+(defun make-org-variables (keywords)
+  "For each “(key . default)” in the ‘keywords’ list, we produce a symbol named
+  ‘org.key’ whose value is set to be the value from “#+key: value”
+  from the current buffer.
+
+  The keys may be in lower case; we upcase them before obtaining
+  their values. If there is no value, we use the defaults in ‘keywords’.
+  "
+
+  (dolist (keydef keywords (message "new org keyword variables created"))
+    (let* ((key (car keydef))
+       (value (org-keyword (upcase key)))
+       (org.key (concat "org." key))
+       (symbol  (intern org.key)))
+
+       (set symbol value)
+       (unless value (set symbol (cdr keydef)))
+       (put symbol 'variable-documentation
+        "Variable generated by ‘make-org-variables’")
+
+       ;; (make-local-variable symbol)
+       ;; Undesirable since I use the ‘org.key’ symbols
+       ;; in the assocaited html buffers.
+      )))
+ #+end_src
+
+ #+RESULTS:
+ : make-org-variables
+
+ :Setting_docstrings_after_the_fact:
+
+ (put FUNCTIONSYMBOL 'function-documentation VALUE)
+
+ (get 'org.sourcefile 'variable-documentation)
+ (put 'org.sourcefile 'variable-documentation "nice")
+
+ (get symbol 'variable-documentation)
+ (put 'symbol 'variable-documentation 'doc-string)
+ :End:
+
+ We know turn to actually obtaining the values of keywords as a function call.
+ Why not just set them once? These values can be altered any time by the user, e.g., me,
+ and as such they need to be reloaded before the post is created as a precautionary measure.
+ E.g., the title in the org file and the title in the article may be distinct, so we allow
+       the user this added flexibility.
+
+ We invoke ~make-org-variables~ to produce variables of the form ~org.var~.
+
+ #+BEGIN_SRC emacs-lisp
+(defun GetOrgKeyWords () "Get the #+KEYWORD values from the org-file."
+
+   (make-org-variables albasmala/keywords)
+
+   ;; We have these here in-case the “org.date” is altered.
+   (setq jekyll.name   (concat org.date "-" NAME))
+   (setq jekyll.name.md (concat org.date "-" NAME ".markdown"))
+)
+
+;; Globally set the variables
+;; (GetOrgKeyWords)
+ #+END_SRC
+
+ #+RESULTS:
+ : GetOrgKeyWords
+
+ Note that these values can be manually overridden by including in your locals, for example:
+ #+BEGIN_SRC emacs-lisp :tangle no
+# eval: (setq org.title "Experimenting..." )
+ #+END_SRC
+
+** MakeHeader
+   :PROPERTIES:
+   :CUSTOM_ID: MakeHeader
+   :END:
+
+ The Jekyll backend has a particular header for articles, which we produce:
+
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(defun MakeHeader () "Header for Jekyll backend."
+  (setq HEADER (concat
+   "---\nlayout: post\nname: " jekyll.name
+   "\ntitle: "			org.title
+   "\ndate: "			org.date
+   "\nauthor: "			org.author
+   "\nimage:\n   href: "	org.image
+   "\ncategories: "		org.categories
+   "\n---\n"
+   )))
+ #+END_SRC
+
+** Article Image
+   :PROPERTIES:
+   :CUSTOM_ID: Article-Image
+   :END:
+
+ An image is included via the ~#+IMAGE:location~ --see the usages sections below.
+ Alternative methods include.
+
+ + An image can be embedded as a url, in Org-mode:
+    #+BEGIN_SRC org :tangle no
+,#+begin_export html
+<center> <img src="http://book.realworldhaskell.org/support/rwh-200.jpg"
+  alt="RWH Cover" width="142" height="142" align="top"> </center>
+,#+end_export
+ #+END_SRC
+
+   :One_long_line:
+    #+BEGIN_SRC org :tangle no
+,#+HTML: <center> <img src="http://book.realworldhaskell.org/support/rwh-200.jpg" alt="RWH Cover" width="142" height="142" align="top"> </center>
+ #+END_SRC
+ :End:
+ + Or as an Org link:
+    #+BEGIN_SRC org :tangle no
+[[file:../assets/img/rwh-200.jpg]]
+ #+END_SRC
+
+ + Or as local image via explicit html link:
+    #+BEGIN_SRC org :tangle no
+,#+begin_export html
+<center> <img src="../assets/img/rwh-200.jpg" alt="RWH Cover"
+width="142" height="142" align="top"> </center>
+,#+end_export
+ #+END_SRC
+
+   :One_long_line:
+    #+BEGIN_SRC org :tangle no
+,#+HTML: <center> <img src="../assets/img/rwh-200.jpg" alt="RWH Cover" width="142" height="142" align="top"> </center>
+ #+END_SRC
+ :End:
+
+ For now, I use the approach of inserting an HTML URL:
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(defun insert-image-and-other-formats ()
+   "Insert image location obtained from #+IMAGE org keyword, as well as top-matter."
+
+   (let ((html.image.info
+       (concat "<center> <img src=\"" org.image
+         "\" alt=\"Musa's article image\""
+         " width=\"" (format "%s" org.imagewidth) "\" "
+         "height=\"" (format "%s" org.imageheight) "\" "
+         "align=\"top\"> </center>")))
+
+   (re-replace-in-file ;; see below
+      (concat AbsNAME ".html")
+      "<h1.*h1>"
+      (lambda (x) (concat x "\n" html.image.info "\n" (make-top-matter))))))
+ #+END_SRC
+
+ One possible extension would be to make parameters for image width and height.
+ Perhaps I will get to doing so in time.
+
+ Disclaimer: I wrote the following /before/ I learned any lisp; everything below is
+ probably terrible.
+ #+BEGIN_SRC emacs-lisp
+(defun re-replace-in-file (file regex whatDo)
+   "Find and replace a regular expression in-place in a file.
+
+   Terrible function … before I took the time to learn any Elisp!
+   "
+    (find-file file)
+    (goto-char 0)
+    (let ((altered (replace-regexp-in-string regex whatDo (buffer-string))))
+      (erase-buffer)
+      (insert altered)
+      (save-buffer)
+      (kill-buffer)))
+ #+END_SRC
+
+ Example usage:
+ #+BEGIN_EXAMPLE emacs-lisp
+;; Within mysite.html we rewrite: <h1.*h1>   ↦   <h1.*h1>\n NICE
+;; I.e., we add a line break after the first heading and a new word, “NICE”.
+(re-replace-in-file "mysite.html"
+                    "<h1.*h1>"
+                    (lambda (x) (concat x "\n NICE")))
+ #+END_EXAMPLE
+** PDF Generation
+   :PROPERTIES:
+   :CUSTOM_ID: PDF-Generation
+   :END:
+
+ :Old_tangle_latex_approach:
+ The org block header for the following has
+ #+begin_src org :tangle no
+:var webArticle = (file-name-sans-extension (buffer-name))
+ #+end_src
+ This allows us to use the buffer's name within the tangled LaTeX! Neato.
+ #+NAME: headers
+ BEGIN_SRC org :tangle headers.ltx :exports code :var webArticle = (file-name-sans-extension (buffer-name))
+
+ END_SRC
+ That is, the string ~webArticle~ is a parameter of this source block.
+
+ Later,
+   ;; Replace webArticle with the name of the article in our headers.ltx file.
+   (re-replace-in-file "~/alhassy.github.io/content/headers.ltx" "webArticle" (lambda (x) NAME))
+ :End:
+
+ Finally, we weave everything together:
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+;; Include LaTeX Org-calls, produce the PDF, then revert the file.
+;;
+(defun prepend-for-simple-latex (&rest extras)
+  "Prepend an Org file with a simple LaTeX preamble; perform extras before returing to source file.
+  "
+  (save-buffer)
+  (copy-file file.org file.src 'overwrite)  ;; Produce a checkpoint.
+  (beginning-of-buffer)
+
+  (insert (s-join "\n" `(
+    "#+OPTIONS: toc:nil"
+    "#+LATEX_HEADER: \\usepackage[margin=0.5in]{geometry}"
+    "#+LATEX_HEADER: \\usepackage{fancyhdr}"
+    "#+LATEX_HEADER: \\setlength{\\headheight}{30pt}"
+    "#+LATEX_HEADER: \\lhead{} \\rhead{} \\cfoot{\\vspace{-3em} \\thepage} \\lfoot{} \\rfoot{}"
+    "#+LATEX_HEADER: \\chead{\\emph{This PDF was generated \\emph{ungracefully} from a web article on"
+    ,(concat "#+LATEX_HEADER: \\url{https://alhassy.github.io/" NAME "/}}}")
+    "#+LATEX_HEADER: \\let\\doit=\\maketitle"
+    "#+LATEX_HEADER: \\def\\maketitle{\\doit\\thispagestyle{fancy}}"
+    "#+LATEX: \\pagestyle{fancy} \\tableofcontents \\newpage"
+    "#+LATEX_HEADER: \\usepackage{color}"
+    "#+LATEX_HEADER: \\definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}"
+    "#+LATEX_HEADER: \\definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}"
+    "#+LATEX_HEADER: \\hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkgreen}"
+    "\n"
+      )))
+
+  ;; Using (lambda () (extras...)) makes the extras happen before the reversion below.
+  (eval extras)
+
+  ;; revert to working file
+  (copy-file file.src file.org 'overwrite)
+  (delete-file file.src)
+  (toggle enable-local-variables :all
+    (revert-buffer 'ignore-auto 'no-confirmation))
+
+  ;; A copy, rather a move, since article repo may differ from blog repo.
+  (copy-file file.pdf
+
+         ;; ‘blogrepo-file.pdf’ is the path relative to the blog repository;
+         ;; this format allows us to view the PDF when the local blog server is running.
+         ;; However, we may currently be residing in a different repository.
+         ;; As such, we shift the cp command to move to the absolute path to the blog repo.
+         (concat "~/alhassy.github.io" (s-chop-prefix ".." blogrepo-file.pdf))
+         ;; (file-truename blogrepo-file.pdf) ;; fix me
+
+         'overwrite
+    )
+)
+
+(defun my-org-latex-export-to-pdf ()
+  "Produce a simple PDF that has wide margins and has a warning"
+  (prepend-for-simple-latex (lambda () (org-latex-export-to-pdf)))
+)
+
+ #+END_SRC
+
+** Other Formats
+   :PROPERTIES:
+   :CUSTOM_ID: Other-Formats
+   :END:
+
+ Readers of the article may want to see the source
+ --which may contain code or parts not rendered in the article, such as exercise solutions.
+ # --
+ # or they may prefer a PDF version for printing or simply for an alternate aesthetic.
+
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(defun get-raw-and-commits (url)
+  "
+  Given a github ‘url’, return the associated commits history and raw textual urls,
+  as a dotted pair.
+
+  For example,
+  url     → https://github.com/⟪user⟫/⟪project⟫/blob/master/content/⟪filepath⟫
+  raw     → https://raw.githubusercontent.com/⟪user⟫/⟪project⟫/master/content/⟪filepath⟫
+  commits → https://github.com/⟪user⟫/⟪project⟫/commits/master/content/⟪filepath⟫
+  "
+
+  (let* ((github  "https://github.com/")
+     (comm  (s-split "/" (s-chop-prefix github url)))
+       )
+
+      (setf (nth 2 comm) "commits")
+
+      ;; raw, then commits
+      `(
+       , (s-prepend "https://raw.githubusercontent.com/"
+         (s-replace "/blob/" "/" (s-chop-prefix github url)))
+       .
+       ,(s-prepend github (s-join "/" comm))
+       )
+  )
+)
+ #+END_SRC
+
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(defun make-html-link (url identifier)
+  "Yield HTML string code for a link to ‘url’ presented as ‘identifier’;
+   if ‘url’ is non-nil; otherwise, yield only the text ‘identifier’.
+  "
+  ;; (message-box url)
+  (if url
+      (concat "<a href=\"" url "\" target=\"_self\">" identifier "</a>")
+      identifier
+  )
+)
+ #+END_SRC
+
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(defun make-top-matter ()
+  "This is the top-most text that appears right after the article's
+   title. It includes viewing the source, a PDF rendition, and
+   the most recent date of modification --unless the variables are nil.
+  "
+  (let* ((date (format-time-string "%Y-%m-%d"))
+     (content "")
+     (rawsrc  (car (get-raw-and-commits org.sourcefile)))
+     (commits (cdr (get-raw-and-commits org.sourcefile)))
+    )
+
+     ;; Perform the loop over tuples (constraint url description).
+     (dolist (var `( (,org.nopdf ,blogrepo-file.pdf  "Read as PDF"   )
+             (,org.nopdf nil                 " or "          )
+             (nil ,rawsrc                    "See the source")
+             (,org.nomodificationdate nil
+                ,(concat " ; " (unless org.nopdf "<br>")))
+             (,org.nomodificationdate ,commits "Last modified")
+             (,org.nomodificationdate nil ,(concat " on " date))
+           )
+          content)
+      ;; Unless there are constraints, concatenate the resulting html.
+      (unless (car var) (setq content (concat content (make-html-link (cadr var) (caddr var)))))
+     )
+
+     ;; for debugging / drafting,
+     (concat
+       (when org.draft (format "<center> Draft: %s </center>" (gensym)))
+       "<small> <center> ⟨ " content " ⟩ </center> </small>")
+  )
+)
+;; Rather than <small>, maybe utilise <font size="3">.
+ #+END_SRC
+
+*** COMMENT org-html-postamble-format at the end of the webpage :old_approach:
+    :PROPERTIES:
+    :CUSTOM_ID: COMMENT-org-html-postamble-format-at-the-end-of-the-webpage
+    :END:
+
+ # Look at the super short doc to know how to manipulate this variable: (describe-symbol 'org-html-postamble-format)
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(setq org-html-postamble-format
+  (let* ((nomorg (buffer-name))
+     (nom    (file-name-sans-extension nomorg))
+     (src    (make-html-link (concat "../content/" nomorg) "Org Source"))
+     (nompdf (concat blogrepo "/assets/pdfs/" nom ".pdf"))
+     (pdf    (make-html-link nompdf "View me as a PDF"))
+    )
+`(("en" ,(concat "<hr> <center> Last modified on %C ; " pdf " or see the " src " ; Contact me at %e </center>"))))
+)
+ #+END_SRC
+
+ To avoid having a postamble altogether we could include
+ #+BEGIN_SRC org
+,#+OPTIONS: html-postamble:nil
+ #+END_SRC
+
+** ~preview-article~ -- the heart of ~AlBasmala.el~
+   :PROPERTIES:
+   :CUSTOM_ID: preview-article-the-heart-of-AlBasmala-el
+   :END:
+
+ We make the article in stages:
+  0. Go to the Org source and use the native Org utitlies to produce a coloured html file.
+  1. Insert the article image into that html file.
+     - We do so *before* producing the Jekyll markdown variant so that we can preview it correctly.
+  2. Remove some clutter from the html, yielding a markdown file.
+  3. Prepend the Jekyll header created using the keywords.
+  4. Move the markdown file to the ~_posts~ directory and show the html file in a browser.
+
+ :Nope:
+ We use ~toggle~, a personal function from my ~init~,
+ that toggles a variables value till the end of its form.
+ We use it below to disable all [[https://www.gnu.org/software/emacs/manual/html_node/elisp/File-Local-Variables.html][Emacs buffer local variables]], do some work,
+ then re-enable them afterwards. Such variables generally require a query
+ since they could be dangerous, like erasing the disk, so we disable them temporarily.
+ :End:
+
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(local-set-key (kbd "<f7>") 'preview-article)
+
+  (cl-defun preview-article (&key (browser nil) (draft nil))
+    "Create and preview a the html form of the content.
+
+    A non-nil value for “org.nopdf” short-circuits the generation of a PDF,
+    thereby yielding a possibly faster execution.
+
+    A non-nil value for “:browser” opens the article using the default browser.
+    This may be undesirable, since it may open many tabs in your brower.
+
+    The ‘draft’ keyword option is here in case we want to override
+    whatever the local ‘#+DRAFT’ value may be.
+    "
+
+    (interactive)
+    (save-buffer)
+
+    (ensure-blog-is-serving)
+
+    ;; Remove any existing html, in case we fail to generate it
+    ;; we do not want to render an out of date version.
+    (shell-command (concat "rm ~/alhassy.github.io/_posts/" jekyll.name.md))
+
+    (setq enable-local-variables nil)
+    (setq enable-local-eval nil)
+
+    ;; compile coloured html
+    (find-file file.org)
+    (GetOrgKeyWords)
+    (when draft (setq org.draft draft))
+    (org-html-export-to-html)
+
+    ;; Insert image, duh.
+    (insert-image-and-other-formats)
+
+    ;; Discard first 3 lines, (note the 1-indexing), since they don't look very nice
+    ;; in the resulting markdown file when rendered on the Jekyll site.
+    (shell-command (concat "tail -n +4 <" file.html " >" jekyll.name.md))
+
+    ;; Preprend file with a header.
+    (find-file jekyll.name.md)
+    (beginning-of-buffer)
+    (MakeHeader)
+    (insert HEADER)
+    (save-buffer)
+    (kill-buffer jekyll.name.md)
+
+    ;; Move it to posts directory.
+    (shell-command (concat "mv " jekyll.name.md " " blogrepo-posts))
+
+    ;; ;; Uncomment for debugging.
+    ;; ;; (find-file (concat "~/alhassy.github.io/_posts/" jekyll.name.md))
+
+    ;; no pdf generation in draft mode
+    (unless (or org.draft org.nopdf) (my-org-latex-export-to-pdf))
+
+    ;; Preview locally in browser.
+    (when browser
+      (let* ((buf (concat "*AlBasmala*" NAME "*")))
+
+        (toggle kill-buffer-query-functions nil (ignore-errors (kill-buffer buf)))
+        (async-shell-command (concat "open http://localhost:4000/" NAME "/") buf)
+      )
+    )
+
+    (message "Article has been opened in your browser.")
+
+    (setq enable-local-variables t)
+    (setq enable-local-eval t)
+  )
+ #+END_SRC
+
+** COMMENT Version control                     :Deprecated:Before_magit_time:
+   :PROPERTIES:
+   :CUSTOM_ID: COMMENT-Version-control
+   :END:
+
+   A simple version control mechanism; will likely switch to ~magit~ in the future.
+
+  #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(global-set-key (kbd "<f8>") 'commit)
+
+(defun commit () "Commit changes to git in the form: “ChangedFile: CommitMessage”."
+  (interactive)
+
+  ;; In-case the article was updated but we forgot to produce new generated files.
+  (preview-article)
+
+  (shell-command "rm *.html")   ;; remove noise
+
+  (let ((msg (read-string (format "Commit message for %s: " NAME))))
+   ; (shell-command (format "git add    ../_posts/%s ../content/%s %s %s" jekyll.name.md file.org blogrepo-file.pdf file.el))
+   ; (shell-command (format "git commit ../_posts/%s ../content/%s %s %s -m \"%s: %s\"" jekyll.name.md file.org blogrepo-file.pdf file.el NAME msg))
+
+   ;; “git add commitables”
+   (shell-command  (s-join " " (cons "git add" commitables)))
+
+   ;; “git commit commitables -m NAME: message”
+   ;; Note that the commit message needs to be in quotes.
+   (shell-command  (s-join " " (append (cons "git commit" commitables) (list (format "-m \"%s: %s\"" NAME msg)))))
+  )
+)
+  #+END_SRC
+
+** Publish
+   :PROPERTIES:
+   :CUSTOM_ID: Publish
+   :END:
+
+ #+BEGIN_SRC emacs-lisp :tangle AlBasmala.el
+(defun publish () "Send material to github pages."
+  (interactive)
+
+  (message (format "Publishing article: %s " NAME))
+
+  (shell-command "rm *.html")   ;; remove noise
+
+  (eshell)
+  (with-current-buffer "*eshell*"
+    (eshell-return-to-prompt)
+    (insert (concat "cd ~/alhassy.github.io/_posts/"
+            " ; "
+            (format "git add %s %s" jekyll.name.md blogrepo-file.pdf))
+            " ; "
+            (format "git commit %s %s -m \"%s: %s\"" jekyll.name.md blogrepo-file.pdf NAME "Article updated.")
+            " ; "
+            "git push")
+    (switch-to-buffer "*eshell*")
+    (eshell-send-input)
+  )
+)
+ #+END_SRC
+
+ # Remember it takes 10 seconds for the live github page to actually change!
+
+** Usage
+   :PROPERTIES:
+   :CUSTOM_ID: Usage
+   :END:
+
+ # Within src blocks containing org, you need to escape org heading, the `*`, delimiters with a comma.
+ # E.g.: ,* My heading
+
+
+ #+BEGIN_EXPORT html
+ <table style="width:100%">
+   <tr>
+ #+END_EXPORT
+
+ #+HTML: <td>
+ The [[file:template.org][example]] source,
+ #+HTML: <small>
+ #+INCLUDE: "template.org" src org
+ #+HTML: </small> </td>
+
+ #+HTML:  <td> Results in, <br> <br> <br>
+ #+BEGIN_EXPORT html
+ <iframe src="../assets/demoing_template.html" style="width:100%" height="487">
+     alternative content for browsers which do not support iframe.
+ </iframe>
+ #+END_EXPORT
+ #+HTML:  </td>
+ #+BEGIN_EXPORT html
+   </tr>
+ </table>
+ #+END_EXPORT
+
+ #+latex: In the LaTeX format, this content is not supported.
+
+
+** footer
+   :PROPERTIES:
+   :CUSTOM_ID: footer
+   :END:
+
+ NOTE: It takes about 20secs ~ 1min for the changes to be live on github pages.
+
+* COMMENT Mention alternative to using “Abstract”
+  :PROPERTIES:
+  :CUSTOM_ID: COMMENT-Mention-alternative-to-using-Abstract
+  :END:
+
+src: https://ogbe.net/blog/blogging_with_org.html
+
+  When I write a blog post, I enclose the "preview" part of the post in #+BEGIN_PREVIEW...#+END_PREVIEW tags, which my (very simple) parser then inserts into the sitemap page.
+
+(defun my-blog-get-preview (file)
+  "The comments in FILE have to be on their own lines, prefereably before and after paragraphs."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (goto-char (point-min))
+    (let ((beg (+ 1 (re-search-forward "^#\\+BEGIN_PREVIEW$")))
+          (end (progn (re-search-forward "^#\\+END_PREVIEW$")
+                      (match-beginning 0))))
+      (buffer-substring beg end))))
+* HTML Postamble                                                     :ignore:
+  :PROPERTIES:
+  :CUSTOM_ID: HTML-Postamble
+  :END:
+#+BEGIN_SRC emacs-lisp :exports results :results raw replace drawer
+(s-join "\n" (--map (concat "#+HTML: " it)
+  (s-split "\n" (concat
+               org-static-blog-page-postamble
+               (org-static-blog-post-postamble "~/blog/AlBasmala.org")))))
+#+END_SRC
+
+#+RESULTS:
+
+#+HTML: <center> <a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/3.0/88x31.png"/> </a> <br/> <span xmlns:dct="https://purl.org/dc/terms/" href="https://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type"> <em>Life & Computing Science</em> </span> by <a xmlns:cc="https://creativecommons.org/ns#" href="https://alhassy.github.io/" property="cc:attributionName" rel="cc:attributionURL"> Musa Al-hassy </a> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/"> Creative Commons Attribution-ShareAlike 3.0 Unported License. </a></center><div id="disqus_thread"></div><script type="text/javascript">/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */var disqus_shortname = 'life-and-computing-science';/* * * DON'T EDIT BELOW THIS LINE * * */(function() { var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true; dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq); })();</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a><div class="taglist"><a href="https://alhassy.github.io/tags.html">Tags</a>: <a href="https://alhassy.github.io/tag-emacs.html">emacs</a> </div><center><strong> Generated by Emacs and Org-mode (•̀ᴗ•́)و </strong></center><center><a href="AlBasmala.org.html"><img
+#+HTML:    src="https://img.shields.io/badge/-Source-informational?logo=read-the-docs"></a>&emsp;<a href="https://github.com/alhassy/alhassy.github.io/commits/master/posts/AlBasmala.org"><img
+#+HTML:    src="https://img.shields.io/badge/-History-informational?logo=github"></a><br><a href="https://www.buymeacoffee.com/alhassy"><img src="https://img.shields.io/badge/-buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee"></a></center><link rel="stylesheet" href="readremaining.js-readremainingjs/css/rr_light.css"
+#+HTML:      type='text/css'/>
+#+HTML:   <script
+#+HTML:      src="readremaining.js-readremainingjs/src/readremaining.jquery.js"></script>
+#+HTML:   <script src='readremaining.js/src/readremaining.jquery.js'
+#+HTML:      type='text/javascript'></script>
+#+HTML:   <script type="text/javascript"> $('body').readRemaining({showGaugeDelay : 10,
+#+HTML:      showGaugeOnStart : true}); </script>

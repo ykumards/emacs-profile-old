@@ -1,0 +1,5 @@
+Yes, with dired mode, you can:
+ •  C-x C-j (dired-jump to the name of the current file, in Dired)
+ •  R to rename the file (or dired-do-rename). 
+ •  C-x k RET to go back to the (renamed) file buffer
+The rename is equivalent to a shell mv, but it will also update any open buffers.

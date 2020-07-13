@@ -1,0 +1,4 @@
+/Users/yogeshkumar/.emacs.d/elpa/vterm-20200707.1655/build/CMakeFiles/rebuild_cache.dir
+/Users/yogeshkumar/.emacs.d/elpa/vterm-20200707.1655/build/CMakeFiles/edit_cache.dir
+/Users/yogeshkumar/.emacs.d/elpa/vterm-20200707.1655/build/CMakeFiles/run.dir
+/Users/yogeshkumar/.emacs.d/elpa/vterm-20200707.1655/build/CMakeFiles/vterm-module.dir
