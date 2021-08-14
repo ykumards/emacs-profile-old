@@ -56,7 +56,6 @@
 ;; Add in your own as you wish:
 (defvar my-packages
   '(
-    ack-and-a-half
     ag
     adoc-mode
     aggressive-indent
