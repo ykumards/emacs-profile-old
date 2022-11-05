@@ -130,7 +130,7 @@
 (load "setup-helm.el")
 
 ;; Langauage-specific
-(load "setup-org.el")
+; (load "setup-org.el")
 
 ;; Languages
 (load "setup-python.el")
@@ -139,6 +139,8 @@
 
 ;; ;; treemacs config
 ;; (load "setup-treemacs.el")
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
