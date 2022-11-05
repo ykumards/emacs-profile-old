@@ -7,5 +7,5 @@
 ;; (load-theme 'spacemacs-dark)
 
 ;; Color Themes
-(load-theme 'doom-one)
+(load-theme 'doom-Isovkem)
 
