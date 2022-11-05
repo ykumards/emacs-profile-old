@@ -1,7 +1,8 @@
 ;; These customizations make it easier for you to navigate files,
 ;; switch buffers, and choose options from the minibuffer.
 
-
+;; Enable evil mode 
+(evil-mode 1)
 ;; "When several buffers visit identically-named files,
 ;; Emacs must give the buffers distinct names. The usual method
 ;; for making buffer names unique adds ‘<2>’, ‘<3>’, etc. to the end

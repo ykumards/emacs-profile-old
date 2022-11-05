@@ -25,6 +25,7 @@
 
       centaur-tabs
       crux
+      evil
       deft
       treemacs
 
