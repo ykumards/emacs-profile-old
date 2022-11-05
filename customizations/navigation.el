@@ -9,13 +9,11 @@
 ;; The forward naming method includes part of the file's directory
 ;; name at the beginning of the buffer name
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Uniquify.html
-(require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
 ;; Turn on recent file mode so that you can more easily switch to
 ;; recently edited files when you first start emacs
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
-(require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 10)
 
@@ -44,10 +42,8 @@
 
 ;; This enables ido in all contexts where it could be useful, not just
 ;; for selecting buffer and file names
-(ido-ubiquitous-mode 1)
-
-;; Shows a list of buffers
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+; (ido-mode 1)
+; (ido-ubiquitous-mode 1)
 
 
 ;; Enhances M-x to allow easier execution of commands. Provides

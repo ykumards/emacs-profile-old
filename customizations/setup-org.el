@@ -46,12 +46,12 @@
           "----------------------"
 ))
 
-(use-package org-download
-  :after org
-  :bind
-  (:map org-mode-map
-        (("s-Y" . org-download-screenshot)
-         ("s-y" . org-download-yank))))
+; (use-package org-download
+;   :after org
+;   :bind
+;   (:map org-mode-map
+;         (("s-Y" . org-download-screenshot)
+;          ("s-y" . org-download-yank))))
 
 ;; bullets
 (require 'org-bullets)
@@ -135,20 +135,21 @@
 ;;        (:foreground "cyan" :weight 'bold)))
 
 ;; Org Journal
-(use-package org-journal
-  :bind
-  ("C-c j" . org-journal-new-entry)
-  :custom
-  (org-journal-date-prefix "#+title: ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-dir "~/Documents/Work/org/notes/musings")
-  (org-journal-date-format "%A, %d %B %Y"))
+; (use-package org-journal
+;   :bind
+;   ("C-c j" . org-journal-new-entry)
+;   :custom
+;   (org-journal-date-prefix "#+title: ")
+;   (org-journal-file-format "%Y-%m-%d.org")
+;   (org-journal-dir "~/Documents/Work/org/notes/musings")
+;   (org-journal-date-format "%A, %d %B %Y"))
 
 ;; Deft shortcuts
 (setq deft-extensions '("org" "md" "txt" "rtf"))
 (setq deft-directory "~/Documents/Work/org/notes")
 (setq deft-recursive t)
 (global-set-key "\C-cd" 'deft)
+
 (setq deft-use-filename-as-title t)
 (setq deft-use-filter-string-for-filename t)
 (setq deft-org-mode-title-prefix t)
@@ -161,19 +162,19 @@
 (global-set-key (kbd "C-c r")
                 (lambda () (interactive) (find-file "~/Documents/Work/org/inbox.org")))
 
-(use-package org-roam
-      :ensure t
-      :hook
-      (after-init . org-roam-mode)
-      :custom
-      (org-roam-directory "~/Documents/Work/org/notes")
-      :bind (:map org-roam-mode-map
-              (("C-c h l" . org-roam)
-               ("C-c h f" . org-roam-find-file)
-               ("C-c h g" . org-roam-graph-show))
-              :map org-mode-map
-              (("C-c h i" . org-roam-insert))
-              (("C-c h I" . org-roam-insert-immediate))))
+; (use-package org-roam
+;       :ensure t
+;       :hook
+;       (after-init . org-roam-mode)
+;       :custom
+;       (org-roam-directory "~/Documents/Work/org/notes")
+;       :bind (:map org-roam-mode-map
+;               (("C-c h l" . org-roam)
+;                ("C-c h f" . org-roam-find-file)
+;                ("C-c h g" . org-roam-graph-show))
+;               :map org-mode-map
+;               (("C-c h i" . org-roam-insert))
+;               (("C-c h I" . org-roam-insert-immediate))))
 (setq org-roam-completion-system 'helm)
 
 ;; https://github.com/alhassy/org-special-block-extras#installation-instructions

@@ -1,5 +1,5 @@
 ; Org agenda
-(global-set-key (kbd "C-q") 'org-agenda)
+(global-set-key (kbd "C-a") 'org-agenda)
 
 ;; Neotree toggle
 ;; (global-set-key (kbd "C-c n") 'neotree-toggle)
@@ -45,3 +45,9 @@
 ;; http://www.emacswiki.org/emacs/HippieExpand
 (global-set-key (kbd "M-/") 'hippie-expand)
 
+
+;; magit status
+(global-set-key (kbd "C-x g") 'magit-status)
+
+;; Shows a list of buffers
+(global-set-key (kbd "C-x C-b") 'ibuffer)

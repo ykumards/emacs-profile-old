@@ -1,13 +1,5 @@
 ;; Customizations relating to editing a buffer.
 
-;; Lisp-friendly hippie expand
-(setq hippie-expand-try-functions-list
-      '(try-expand-dabbrev
-        try-expand-dabbrev-all-buffers
-        try-expand-dabbrev-from-kill
-        try-complete-lisp-symbol-partially
-        try-complete-lisp-symbol))
-
 ;; Highlights matching parenthesis
 (show-paren-mode 1)
 
@@ -22,6 +14,7 @@
 ;; http://www.emacswiki.org/emacs/SavePlace
 (require 'saveplace)
 (setq-default save-place t)
+
 ;; keep track of saved places in ~/.emacs.d/places
 (setq save-place-file (concat user-emacs-directory "places"))
 
@@ -50,7 +43,7 @@
 ;; use 2 spaces for tabs
 (defun die-tabs ()
   (interactive)
-  (set-variable 'tab-width 2)
+  (set-variable 'tab-width 4)
   (mark-whole-buffer)
   (untabify (region-beginning) (region-end))
   (keyboard-quit))
@@ -64,16 +57,11 @@
 
 (setq electric-indent-mode nil)
 
-(global-set-key (kbd "C-x g") 'magit-status)
-
-;; crux
-(require 'crux)
 
 ;; Require autopair for smart parenthesis closing
-(require 'autopair)
 (autopair-global-mode) 
+
 ;; Evil mode
-;;(require 'evil)
 ;;  (evil-mode 1)
 
 ;; Enable word wrap

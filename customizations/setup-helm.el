@@ -1,32 +1,14 @@
 ;;; init-helm-thierry.el --- My startup file for helm. -*- lexical-binding: t -*- 
 ;;; Code:
 
-;;; Load all autoloads for helm and its extensions
-;;
-(require 'helm-config)
-;;(load "/home/thierry/elisp/helm-extensions/helm-extensions-autoloads.el")
-
 
 ;;; Enable Modes (helm-mode is loading nearly everything).
 ;;
-(use-package helm-mode
-    :config (helm-mode 1))
+(helm-mode 1)
 
-(use-package helm-adaptive
-    :config (helm-adaptive-mode 1))
+(helm-adaptive-mode 1)
 
-;; (use-package helm-ring
-;;     :config (helm-push-mark-mode 1))
-
-(use-package helm-utils
-    ;; Popup buffer-name or filename in grep/moccur/imenu-all etc...
-    :config (helm-popup-tip-mode 1))
-
-;; (use-package helm-sys
-;;     :config (helm-top-poll-mode 1))
-
-;;;; Test Sources or new helm code. 
-;;   !!!WARNING EXPERIMENTAL!!!
+(helm-popup-tip-mode 1)
 
 (defun helm/version-1 ()
   (with-temp-buffer
@@ -72,14 +54,13 @@
     (when (eq major-mode 'emacs-lisp-mode)
       (message "[%s]" (which-function)))))
 
-;; (define-key helm-moccur-map (kbd "C-c ?") 'helm/occur-which-func)
 (define-key helm-grep-map   (kbd "C-c ?") 'helm/occur-which-func)
 
 ;; Show the visibles buffers on top of list (issue #1301)
-
 (defun helm/modify-ido-temp-list ()
   (let ((bl (mapcar #'buffer-name (buffer-list (selected-frame)))))
     (setq ido-temp-list (nconc (cdr bl) (list (car bl))))))
+
 ;;(add-hook 'ido-make-buffer-list-hook 'helm/modify-ido-temp-list)
 
 
