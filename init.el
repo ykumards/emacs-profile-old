@@ -28,6 +28,7 @@
       deft
       treemacs
 
+      evil
       ;; Python
       ein
       elpy
@@ -139,6 +140,8 @@
 
 ;; ;; treemacs config
 ;; (load "setup-treemacs.el")
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
